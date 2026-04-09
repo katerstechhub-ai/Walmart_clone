@@ -29,7 +29,7 @@ const Navigation = () => {
                         </div>
 
                         {/* DESKTOP ONLY - Pickup/Delivery Button */}
-                        <button className="hidden lg:flex items-center w-[20%] gap-2 bg-blue-800 border border-gray-300 rounded-full px-4 py-2 hover:border-blue-500 transition-colors">
+                        <button className="hidden lg:flex items-center w-[20%] gap-2 bg-blue-800 border  rounded-full px-4 py-2 border-blue-500 transition-colors">
                             <img
                                 src="/location-icon.png"
                                 alt="Location"
@@ -227,11 +227,11 @@ const Navigation = () => {
                             {isDepartmentsOpen && (
                                 <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
                                     <div className="p-3">
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Electronics</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Clothing</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Home & Furniture</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Grocery</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Toys</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Electronics</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Clothing</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Home & Furniture</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Grocery</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Toys</a>
                                     </div>
                                 </div>
                             )}
@@ -254,11 +254,11 @@ const Navigation = () => {
                             {isServicesOpen && (
                                 <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
                                     <div className="p-3">
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Auto Care</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Pharmacy</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Vision & Optical</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Financial Services</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Photo Services</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Auto Care</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Pharmacy</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Vision & Optical</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Financial Services</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Photo Services</a>
                                     </div>
                                 </div>
                             )}
@@ -310,11 +310,11 @@ const Navigation = () => {
                             {isMoreOpen && (
                                 <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
                                     <div className="p-3">
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Meals Made Easy</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">My Items</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Only at Walmart</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Credit Card</a>
-                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600">Gift Cards</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Meals Made Easy</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">My Items</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Only at Walmart</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Credit Card</a>
+                                        <a href="#" className="block py-2 text-gray-700 hover:text-blue-600 text-xs">Gift Cards</a>
                                     </div>
                                 </div>
                             )}
