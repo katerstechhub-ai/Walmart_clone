@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BsSearch, BsHeart, BsPerson, BsCart, BsGeoAlt, BsChevronDown, BsList } from "react-icons/bs";
 
 const Navigation = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -29,12 +30,11 @@ const Navigation = () => {
                         </div>
 
                         {/* DESKTOP ONLY - Pickup/Delivery Button */}
-                        <button className="hidden lg:flex items-center w-[20%] gap-2 bg-blue-800 border  rounded-full px-4 py-2 border-blue-500 transition-colors">
-                            <img
-                                src="/location-icon.png"
-                                alt="Location"
-                                className="w-6 h-6 rounded-full"
-                            />
+                        <button className="hidden lg:flex items-center w-[20%] gap-2 bg-blue-800 border rounded-full px-4 py-2 border-blue-500 transition-colors">
+                            {/* REPLACE WITH LOCATION ICON: <BsGeoAlt className="w-6 h-6 text-white" /> */}
+                            <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-blue-800">
+                                <BsGeoAlt className="w-6 h-6 text-white" /> 
+                            </div>
                             <div className="text-left">
                                 <div className="text-xs text-white">Pickup or delivery?</div>
                                 <div className="text-sm text-white font-medium">Sacramento, 95829</div>
@@ -53,13 +53,10 @@ const Navigation = () => {
                                 />
                                 <button
                                     type="submit"
-                                    className="px-6 bg-white rounded-r-full hover:bg-blue-700 transition-colors flex items-center justify-center"
+                                    className="px-4  bg-blue rounded-r-full transition-colors flex items-center justify-center"
                                 >
-                                    <img
-                                        src="/user-icon.png"
-                                        alt="Search"
-                                        className="w-6 h-6"
-                                    />
+                                    {/* REPLACE WITH SEARCH ICON: <BsSearch className="w-6 h-6 text-blue-600" /> */}
+                                    <span className="text-blue-600  text-xl"><BsSearch className="w-6 h-4 text-white " /></span>
                                 </button>
                             </form>
                         </div>
@@ -67,29 +64,20 @@ const Navigation = () => {
                         {/* DESKTOP ONLY - Right Icons */}
                         <div className="hidden lg:flex items-center gap-4">
                             <button className="flex flex-col items-center text-white hover:text-yellow-200">
-                                <img
-                                    src="/heart-icon.png"
-                                    alt="Favorites"
-                                    className="w-6 h-6"
-                                />
+                                {/* REPLACE WITH HEART ICON: <BsHeart className="w-6 h-6" /> */}
+                                <span className="text-2xl"><BsHeart className="w-6 h-6" /></span>
                                 <span className="text-xs mt-1">Favorites</span>
                             </button>
 
                             <button className="flex flex-col items-center text-white hover:text-yellow-200">
-                                <img
-                                    src="/user-icon.png"
-                                    alt="Sign In"
-                                    className="w-6 h-6"
-                                />
+                                {/* REPLACE WITH USER ICON: <BsPerson className="w-6 h-6" /> */}
+                                <span className="text-2xl"><BsPerson className="w-6 h-6" /> </span>
                                 <span className="text-xs mt-1">Sign In</span>
                             </button>
 
                             <button className="flex flex-col items-center text-white hover:text-yellow-200">
-                                <img
-                                    src="/cart-icon.png"
-                                    alt="Cart"
-                                    className="w-6 h-6"
-                                />
+                                {/* REPLACE WITH CART ICON: <BsCart className="w-6 h-6" /> */}
+                                <span className="text-2xl"><BsCart className="w-6 h-6" /></span>
                                 <span className="text-xs mt-1">$5.22</span>
                             </button>
                         </div>
@@ -99,13 +87,15 @@ const Navigation = () => {
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             className="lg:hidden text-white text-2xl"
                         >
-                            ☰
+                            {/* REPLACE WITH MENU ICON: <BsList className="w-6 h-6" /> */}
+                           <BsList className="w-6 h-6" />
                         </button>
 
                         {/* MOBILE ONLY - Search Text and Cart */}
                         <div className="flex items-center gap-3 lg:hidden">
                             <span className="text-white text-sm">Search Walmart</span>
-                            <button className="text-white text-xl">🔍</button>
+                            {/* REPLACE WITH SEARCH ICON: <BsSearch className="text-white text-xl" /> */}
+                            <button className="text-white text-xl"><BsSearch className="text-blue-600 text-xl" /> </button>
                             <button className="text-white font-bold text-sm">$0.00</button>
                         </div>
                     </div>
@@ -131,7 +121,8 @@ const Navigation = () => {
                                 type="submit"
                                 className="px-4 bg-white rounded-r-full flex items-center justify-center"
                             >
-                                <span className="text-blue-600 text-xl">🔍</span>
+                                {/* REPLACE WITH SEARCH ICON: <BsSearch className="text-blue-600 text-xl" /> */}
+                                <span className="text-blue-600 text-xl"><BsSearch className="text-blue-600 text-xl" /> </span>
                             </button>
                         </form>
                     </div>
@@ -149,7 +140,8 @@ const Navigation = () => {
                                 className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-100 w-full text-left"
                             >
                                 <span>Departments</span>
-                                <span>▼</span>
+                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
+                                <span> <BsChevronDown className="w-4 h-4" /></span>
                             </button>
                             {isDepartmentsOpen && (
                                 <div className="pl-4 space-y-1">
@@ -167,7 +159,8 @@ const Navigation = () => {
                                 className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-100 w-full text-left"
                             >
                                 <span>Services</span>
-                                <span>▼</span>
+                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
+                                <span> <BsChevronDown className="w-4 h-4" /></span>
                             </button>
                             {isServicesOpen && (
                                 <div className="pl-4 space-y-1">
@@ -191,7 +184,8 @@ const Navigation = () => {
                                 className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-100 w-full text-left"
                             >
                                 <span>More</span>
-                                <span>▼</span>
+                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
+                                <span> <BsChevronDown className="w-4 h-4" /></span>
                             </button>
                             {isMoreOpen && (
                                 <div className="pl-4 space-y-1">
@@ -217,11 +211,8 @@ const Navigation = () => {
                                 className="flex items-center gap-1 px-2 py-1 rounded-full hover:border-blue-500 bg-white transition-colors border border-transparent text-gray-700"
                             >
                                 <span className="text-sm">Departments</span>
-                                <img
-                                    src="/cart-icon.png"
-                                    alt="drop"
-                                    className="w-6 h-6"
-                                />
+                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
+                                <span className="text-xs"> <BsChevronDown className="w-4 h-4" /> </span>
                             </button>
 
                             {isDepartmentsOpen && (
@@ -244,11 +235,8 @@ const Navigation = () => {
                                 className="flex items-center gap-1 px-2 py-1 rounded-full hover:border-blue-500 bg-white transition-colors border border-transparent text-gray-700"
                             >
                                 <span className="text-sm">Services</span>
-                                <img
-                                    src="/cart-icon.png"
-                                    alt="drop"
-                                    className="w-6 h-6"
-                                />
+                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
+                                <span className="text-xs"> <BsChevronDown className="w-4 h-4" /> </span>
                             </button>
 
                             {isServicesOpen && (
@@ -300,11 +288,8 @@ const Navigation = () => {
                                 className="flex items-center gap-1 px-2 py-1 rounded-full hover:border-blue-500 bg-white transition-colors border border-transparent text-gray-700"
                             >
                                 <span className="text-sm">More</span>
-                                <img
-                                    src="/cart-icon.png"
-                                    alt="drop"
-                                    className="w-6 h-6"
-                                />
+                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
+                                <span className="text-xs"> <BsChevronDown className="w-4 h-4" /></span>
                             </button>
 
                             {isMoreOpen && (
