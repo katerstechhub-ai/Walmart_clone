@@ -3,6 +3,8 @@ import Navigation from '../Components/Navigation';
 import HeroSlider from '../Components/heroslider';
 import Card from '../Components/Card';
 import { FiPlus } from "react-icons/fi";
+import MothersDaySection from '../Components/Mothersday';
+import Card2 from '../Components/Card2';
 
 const Home = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -215,7 +217,7 @@ const Home = () => {
                     )}
 
                     {/* Dots Indicator */}
-                    {totalSlides > 1 && (
+                    {/* {totalSlides > 1 && (
                         <div className="flex justify-center gap-2 mt-8">
                             {Array.from({ length: totalSlides }).map((_, index) => (
                                 <button
@@ -228,7 +230,7 @@ const Home = () => {
                                 />
                             ))}
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
 
@@ -316,9 +318,10 @@ const Home = () => {
                             Learn more
                         </button>
                     </div>
-
                 </div>
             </div>
+            <MothersDaySection />
+
         </div>
     );
 };
