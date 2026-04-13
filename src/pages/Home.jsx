@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import Navigation from '../Components/Navigation';
 import HeroSlider from '../Components/heroslider';
 import Card from '../Components/Card';
-import { FiPlus } from "react-icons/fi";
 import MothersDaySection from '../Components/Mothersday';
-import Card2 from '../Components/Card2';
+import EventSection from '../Components/Eventsection';
 
 const Home = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -79,27 +78,6 @@ const Home = () => {
         // Next 6 Products
         {
             id: 7,
-            image: "https://i5.walmartimages.com/seo/Creatine-Monohydrate-Gain-Lean-Muscle-Improve-Performance-and-Strength-500g_a2af36c0-8dda-48ad-9dbe-961b998e778c.03f5ec0f06c9b05e37e3460d012ebfde.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            title: "Sports Research®️ Creatine Monohydrate - Gain Lean...",
-            price: "27.95",
-            originalPrice: "34.99",
-            description: "Sports Research®️ Creatine Monohydrate - Gain lean muscle, improve athletic performance",
-            buttonText: "Options",
-            badge: "Top Rated",
-            rating: "4.7"
-        },
-        {
-            id: 8,
-            image: "https://i5.walmartimages.com/seo/Pure-Encapsulations-OptiFerin-C-Overall-Immune-System-Health-60-Capsules_37a65360-23b2-47e1-9821-4f4052b36390.59f8dc5fef0533f2fca4b71e09ac8c79.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            title: "Pure Encapsulations OptiFerin-C, Iron with Vitamin C",
-            price: "16.00",
-            originalPrice: "19.99",
-            description: "Pure Encapsulations OptiFerin-C, Iron with Vitamin C for optimal absorption",
-            buttonText: "+Add",
-            rating: "4.9"
-        },
-        {
-            id: 9,
             image: "https://i5.walmartimages.com/seo/Sol-de-Janeiro-Brazilian-Crush-Cheirosa-40-Hair-Body-Mist-3-oz_cd72426e-a8d8-415d-9dfc-ad5f4b67436a.3020ccd20f52f810c19897f1e557e822.jpeg?odnHeight=573&odnWidth=573&odnBg=FFFFFF",
             title: "Sol de Janeiro Brazilian Crush Cheirosa 40 Hair & Body...",
             price: "27.31",
@@ -110,7 +88,7 @@ const Home = () => {
             rating: "4.7"
         },
         {
-            id: 10,
+            id: 8,
             image: "https://i5.walmartimages.com/seo/K18-Professional-Molecular-Repair-Hair-Mask-5-oz_be81c98a-66d4-4ef1-af8c-f002413dd69d.3b4a24179416e2cc72e5c10d5d821192.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
             title: "K18 Professional Molecular Repair Hair Mask 5 oz",
             price: "87.99",
@@ -120,7 +98,7 @@ const Home = () => {
             rating: "4.8"
         },
         {
-            id: 11,
+            id: 9,
             image: "https://i5.walmartimages.com/seo/Nutricost-Methylated-Multivitamin-120-capsules-60-servings-23-Vitamin-Minerals-Per-Serving_7d7eab71-a53f-424b-a413-7a2f26e665e2.b398bfd3b75a8f5a9fa7d3dc7570cb37.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
             title: "Nutricost Methylated Multivitamin 120 capsules",
             price: "15.95",
@@ -130,7 +108,7 @@ const Home = () => {
             rating: "4.5"
         },
         {
-            id: 12,
+            id: 10,
             image: "https://i5.walmartimages.com/seo/Momcozy-Portable-Bottle-Warmer-17oz-Travel-Milk-Warmer-with-Dual-Heating-Modes_7d1f7755-2a44-4bd1-ae2a-034cfdc007c0.cfba71a5a93bd266488ebf41df4cc674.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
             title: "Momcozy Portable Bottle Warmer, 17oz Travel Milk...",
             price: "79.99",
@@ -139,6 +117,26 @@ const Home = () => {
             buttonText: "Options",
             badge: "Sale",
             rating: "4.6"
+        },
+        {
+            id: 11,
+            image: "https://i5.walmartimages.com/seo/Nutricost-Methylated-Vitamin-B-Complex-120g",
+            title: "Nutricost Methylated Vitamin B Complex 120g",
+            price: "15.55",
+            originalPrice: "18.99",
+            description: "Nutricost Methylated Vitamin B Complex 120g, energy boost formula",
+            buttonText: "+Add",
+            rating: "4.4"
+        },
+        {
+            id: 12,
+            image: "https://i5.walmartimages.com/seo/PURATU-Creatine-Monohydrate-Gain-Lean-Muscle",
+            title: "PURATU Creatine Monohydrate - Gain Lean Muscle",
+            price: "13.62",
+            originalPrice: "16.99",
+            description: "PURATU Creatine Monohydrate - Gain lean muscle mass, improve strength",
+            buttonText: "+Add",
+            rating: "4.5"
         }
     ];
 
@@ -158,10 +156,6 @@ const Home = () => {
         if (currentSlide > 0) {
             setCurrentSlide(currentSlide - 1);
         }
-    };
-
-    const goToSlide = (index) => {
-        setCurrentSlide(index);
     };
 
     return (
@@ -186,6 +180,7 @@ const Home = () => {
                         {visibleProducts.map((product) => (
                             <Card
                                 key={product.id}
+                                id={product.id}
                                 image={product.image}
                                 title={product.title}
                                 price={product.price}
@@ -215,22 +210,6 @@ const Home = () => {
                             </button>
                         </>
                     )}
-
-                    {/* Dots Indicator */}
-                    {/* {totalSlides > 1 && (
-                        <div className="flex justify-center gap-2 mt-8">
-                            {Array.from({ length: totalSlides }).map((_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => goToSlide(index)}
-                                    className={`h-2 rounded-full transition-all duration-300 ${currentSlide === index
-                                        ? "bg-blue-600 w-6"
-                                        : "bg-gray-300 w-2 hover:bg-gray-400"
-                                        }`}
-                                />
-                            ))}
-                        </div>
-                    )} */}
                 </div>
             </div>
 
@@ -240,7 +219,7 @@ const Home = () => {
 
                     {/* First Div - Walmart+ Members */}
                     <div
-                        className="rounded-lg p-6 text-white w-[400px] flex flex-col justify-start gap-3 min-h-[500px]  bg-cover bg-center relative overflow-hidden"
+                        className="rounded-lg p-6 text-white w-[400px] flex flex-col justify-start gap-3 min-h-[500px] bg-cover bg-center relative overflow-hidden"
                         style={{ backgroundImage: "url(https://i5.walmartimages.com/dfw/4ff9c6c9-6e94/k2-_bf6a2072-1e14-4047-8d95-6ccc2fd414e8.v1.jpg?odnHeight=1316&odnWidth=1316&odnBg=&odnDynImageQuality=70)", backgroundColor: "#1d4ed8" }}
                     >
                         <div className="relative z-10">
@@ -305,7 +284,7 @@ const Home = () => {
 
                     {/* Third Div - Taxes done right */}
                     <div
-                        className="rounded-lg p-6 w-full flex flex-col justify-start gap-3 min-h-[500px]  bg-cover bg-center relative overflow-hidden"
+                        className="rounded-lg p-6 w-full flex flex-col justify-start gap-3 min-h-[500px] bg-cover bg-center relative overflow-hidden"
                         style={{ backgroundImage: "url('https://i5.walmartimages.com/dfw/4ff9c6c9-7687/k2-_ba04f813-b876-4809-b527-a716d91c2644.v1.jpg?odnHeight=1316&odnWidth=770&odnBg=&odnDynImageQuality=70')", backgroundColor: "#fefce8" }}
                     >
                         <div className="absolute inset-0" />
@@ -320,8 +299,12 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Mother's Day Gifts Section */}
             <MothersDaySection />
 
+            {/* Event Section - Nike to MICHELE */}
+            <EventSection />
         </div>
     );
 };

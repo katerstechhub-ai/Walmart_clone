@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Card2 = ({ image, title, price, originalPrice, badge, buttonText }) => {
+const Card2 = ({ image, title, price, originalPrice, badge, id }) => {
     return (
-        <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden group">
+        <Link to={`/product/${id}`} className="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden group cursor-pointer">
             {/* Product Image */}
             <div className="relative overflow-hidden bg-gray-50">
                 <img
@@ -20,7 +21,7 @@ const Card2 = ({ image, title, price, originalPrice, badge, buttonText }) => {
 
             {/* Product Info */}
             <div className="p-2">
-                  {/* Price */}
+                {/* Price */}
                 <div className="flex items-baseline gap-1">
                     <span className="text-sm font-bold text-black">${price}</span>
                     {originalPrice && (
@@ -34,7 +35,7 @@ const Card2 = ({ image, title, price, originalPrice, badge, buttonText }) => {
                     {title}
                 </h3>
             </div>
-        </div>
+        </Link>
     );
 };
 
