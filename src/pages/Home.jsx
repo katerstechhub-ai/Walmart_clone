@@ -4,6 +4,8 @@ import HeroSlider from '../Components/heroslider';
 import Card from '../Components/Card';
 import MothersDaySection from '../Components/Mothersday';
 import EventSection from '../Components/Eventsection';
+import CategorySlider from '../Components/CategorySlider';
+import FastDeliverySection from '../Components/FastDeliverySection';
 
 const Home = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -305,6 +307,8 @@ const Home = () => {
 
             {/* Event Section - Nike to MICHELE */}
             <EventSection />
+            <CategorySlider/>
+            <FastDeliverySection/>
         </div>
     );
 };
