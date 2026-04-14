@@ -3,10 +3,11 @@ import Navigation from '../Components/Navigation';
 import HeroSlider from '../Components/heroslider';
 import Card from '../Components/Card';
 import MothersDaySection from '../Components/Mothersday';
-import EventSection from '../Components/Eventsection';
+import EventSection from '../Components/EventSection';
 import CategorySlider from '../Components/CategorySlider';
 import FastDeliverySection from '../Components/FastDeliverySection';
 import PatioGardenSection from '../Components/PatioGardenSection';
+import SwimShopSection from '../Components/SwimShopSection';
 
 const Home = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -311,6 +312,7 @@ const Home = () => {
             <CategorySlider/>
             <FastDeliverySection/>
             <PatioGardenSection/>
+            <SwimShopSection/>
         </div>
     );
 };
