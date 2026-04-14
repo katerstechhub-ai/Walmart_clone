@@ -35,7 +35,7 @@ const Card4 = ({ image, title, price, originalPrice, buttonText, id, shipping, u
                     <p className="text-xs text-gray-500 mt-0.5">{shipping}</p>
                 )}
                 {/* Title */}
-                <h3 className="font-semibold text-gray-800 text-xs mt-2 line-clamp-2 min-h-[32px]">
+                <h3 className="font-semibold text-gray-800 text-md mt-2 line-clamp-2 min-h-[32px]">
                     {title}
                 </h3>
             </div>

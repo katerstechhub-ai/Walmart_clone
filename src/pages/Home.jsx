@@ -6,6 +6,7 @@ import MothersDaySection from '../Components/Mothersday';
 import EventSection from '../Components/Eventsection';
 import CategorySlider from '../Components/CategorySlider';
 import FastDeliverySection from '../Components/FastDeliverySection';
+import PatioGardenSection from '../Components/PatioGardenSection';
 
 const Home = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -309,6 +310,7 @@ const Home = () => {
             <EventSection />
             <CategorySlider/>
             <FastDeliverySection/>
+            <PatioGardenSection/>
         </div>
     );
 };
