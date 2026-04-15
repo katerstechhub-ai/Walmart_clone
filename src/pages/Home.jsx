@@ -11,6 +11,7 @@ import SwimShopSection from '../Components/SwimShopSection';
 import TrendingSocialSection from '../Components/TrendingSocialSection';
 import FeaturedVideosSection from '../Components/FeaturedVideoSection';
 import WarmerWeatherSection from '../Components/WarmerWeatherSection';
+import Footer from '../Components/Footer';
 
 const Home = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -318,6 +319,7 @@ const Home = () => {
             <TrendingSocialSection/>
             <FeaturedVideosSection/>
             <WarmerWeatherSection/>
+            <Footer/>
         </div>
     );
 };
