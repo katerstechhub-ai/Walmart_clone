@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const HeroSlider = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -17,7 +18,7 @@ const HeroSlider = () => {
             title: "Free Delivery is always a plus.",
             subtitle: "Try Walmart+ now",
             buttonText: "Try Walmart+ now",
-           
+
         },
         {
             id: 3,
@@ -59,6 +60,7 @@ const HeroSlider = () => {
     return (
         <div className="relative px-4 mt-4 p-6 w-full overflow-hidden">
             <div
+            // max-w-[1400px]
                 className="relative h-[300px] md:h-[200px] lg:h-[250px] w-full bg-gray-200 bg-cover bg-center rounded-lg"
                 style={{ backgroundImage: current.imageUrl ? `url(${current.imageUrl})` : 'none' }}
             >
@@ -81,9 +83,11 @@ const HeroSlider = () => {
                                 {current.subtitle}
                             </p>
 
-                            <button className="bg-white text-black px-6 py-2 rounded-full font-semibold cursor-pointer border border-black transition-colors">
-                                {current.buttonText}
-                            </button>
+                            <Link to="/product">
+                                <button className="bg-white text-black px-6 py-2 rounded-full font-semibold cursor-pointer border border-black transition-colors hover:bg-gray-100">
+                                    {current.buttonText}
+                                </button>
+                            </Link>
 
                             {current.footerText && (
                                 <p className="text-xs mt-3 opacity-70">

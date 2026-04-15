@@ -12,6 +12,7 @@ import TrendingSocialSection from '../Components/TrendingSocialSection';
 import FeaturedVideosSection from '../Components/FeaturedVideoSection';
 import WarmerWeatherSection from '../Components/WarmerWeatherSection';
 import Footer from '../Components/Footer';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -176,10 +177,11 @@ const Home = () => {
                 {/* Header with Title and Shop All Link */}
                 <div className="flex justify-between items-center mb-6 pb-3">
                     <h2 className="text-2xl font-bold text-gray-800">Discover Great Brands</h2>
-                    <button className="text-black cursor-pointer text-sm font-medium underline underline-offset-4">
+                    <Link to="/product" className="text-black cursor-pointer text-sm font-medium underline underline-offset-4">
                         Shop all
-                    </button>
+                    </Link>
                 </div>
+
 
                 {/* Slider Container */}
                 <div className="relative">
@@ -312,14 +314,14 @@ const Home = () => {
 
             {/* Event Section - Nike to MICHELE */}
             <EventSection />
-            <CategorySlider/>
-            <FastDeliverySection/>
-            <PatioGardenSection/>
-            <SwimShopSection/>
-            <TrendingSocialSection/>
-            <FeaturedVideosSection/>
-            <WarmerWeatherSection/>
-            <Footer/>
+            <CategorySlider />
+            <FastDeliverySection />
+            <PatioGardenSection />
+            <SwimShopSection />
+            <TrendingSocialSection />
+            <FeaturedVideosSection />
+            <WarmerWeatherSection />
+            <Footer />
         </div>
     );
 };
