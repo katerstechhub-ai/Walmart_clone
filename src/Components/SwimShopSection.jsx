@@ -196,7 +196,7 @@ const SwimShopSection = () => {
                         )}
 
                         {/* Dots Indicator */}
-                        {totalSlides > 1 && (
+                        {/* {totalSlides > 1 && (
                             <div className="flex justify-center gap-2 mt-6">
                                 {Array.from({ length: totalSlides }).map((_, index) => (
                                     <button
@@ -209,7 +209,7 @@ const SwimShopSection = () => {
                                     />
                                 ))}
                             </div>
-                        )}
+                        )} */}
                     </div>
                 </div>
             </div>

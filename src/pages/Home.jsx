@@ -8,6 +8,9 @@ import CategorySlider from '../Components/CategorySlider';
 import FastDeliverySection from '../Components/FastDeliverySection';
 import PatioGardenSection from '../Components/PatioGardenSection';
 import SwimShopSection from '../Components/SwimShopSection';
+import TrendingSocialSection from '../Components/TrendingSocialSection';
+import FeaturedVideosSection from '../Components/FeaturedVideoSection';
+import WarmerWeatherSection from '../Components/WarmerWeatherSection';
 
 const Home = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -217,7 +220,6 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* Promo Section - 3 Column Grid */}
             <div className="max-w-[1400px] items-center mx-auto px-5 py-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
 
@@ -313,6 +315,9 @@ const Home = () => {
             <FastDeliverySection/>
             <PatioGardenSection/>
             <SwimShopSection/>
+            <TrendingSocialSection/>
+            <FeaturedVideosSection/>
+            <WarmerWeatherSection/>
         </div>
     );
 };
