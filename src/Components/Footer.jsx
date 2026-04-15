@@ -8,14 +8,14 @@ const Footer = () => {
             <div className="bg-blue-100 py-8 px-5">
                 <div className="max-w-[1400px] mx-auto text-center">
                     <p className="text-gray-800 font-medium mb-4">We'd love to hear what you think!</p>
-                    <button className="border border-gray-800 text-gray-800 bg-white font-bold px-6 py-2 rounded-full ">
+                    <button className="border border-gray-800 text-gray-800 bg-white cursor-pointer font-bold px-6 py-2 rounded-full ">
                         Give feedback
                     </button>
                 </div>
             </div>
 
             {/* Main Footer - Dark Blue Background with Links */}
-            <div className="bg-blue-900 py-8 px-5">
+            <div className="bg-blue-900 py-6 px-5">
                 <div className="max-w-[1400px] mx-auto">
                     {/* First Line of Links */}
                     <div className="flex flex-wrap justify-center gap-x-4 gap-y-3 mb-4">
