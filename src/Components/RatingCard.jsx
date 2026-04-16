@@ -112,7 +112,7 @@ const RatingCard = ({
                 </div>
 
                 {/* Title */}
-                <p className="text-xs font-medium text-gray-800 line-clamp-2 min-h-[32px] mb-1">
+                <p className="text-sm font-medium text-gray-800 line-clamp-2 min-h-[32px] mb-1">
                     {title}
                 </p>
 

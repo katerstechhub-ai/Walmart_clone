@@ -18,6 +18,7 @@ import {
 import RatingsSection from '../Components/RatingsSection';
 import RecentlyViewedSection from '../Components/RecentlyViewedSection';
 import AboutThisItem from '../Components/AboutThisItem';
+import PopularItemsSection from '../Components/PopularItemsSection';
 
 const ProductDetailsPage = () => {
     const [selectedSize, setSelectedSize] = useState('XXL');
@@ -190,6 +191,7 @@ const ProductDetailsPage = () => {
                         <RatingsSection/>
                         <RecentlyViewedSection/>
                         <AboutThisItem/>
+                        <PopularItemsSection/>
                     </div>
 
                     {/* RIGHT DIV - Made slimmer */}
