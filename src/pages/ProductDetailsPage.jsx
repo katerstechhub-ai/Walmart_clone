@@ -19,6 +19,8 @@ import RatingsSection from '../Components/RatingsSection';
 import RecentlyViewedSection from '../Components/RecentlyViewedSection';
 import AboutThisItem from '../Components/AboutThisItem';
 import PopularItemsSection from '../Components/PopularItemsSection';
+import ProductsYouMayAlsoLike from '../Components/ProductsYouMayAlsoLike';
+import CustomerRatingsSection from '../Components/CustomerRatingsSection';
 
 const ProductDetailsPage = () => {
     const [selectedSize, setSelectedSize] = useState('XXL');
@@ -192,6 +194,8 @@ const ProductDetailsPage = () => {
                         <RecentlyViewedSection/>
                         <AboutThisItem/>
                         <PopularItemsSection/>
+                        <ProductsYouMayAlsoLike/>
+                        <CustomerRatingsSection/>
                     </div>
 
                     {/* RIGHT DIV - Made slimmer */}
