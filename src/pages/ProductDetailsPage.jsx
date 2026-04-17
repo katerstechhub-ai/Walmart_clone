@@ -21,6 +21,8 @@ import AboutThisItem from '../Components/AboutThisItem';
 import PopularItemsSection from '../Components/PopularItemsSection';
 import ProductsYouMayAlsoLike from '../Components/ProductsYouMayAlsoLike';
 import CustomerRatingsSection from '../Components/CustomerRatingsSection';
+import MoreItemsToExplore from '../Components/MoreItemsToExplore';
+import DisneysectionSection from '../Components/Disneysection';
 
 const ProductDetailsPage = () => {
     const [selectedSize, setSelectedSize] = useState('XXL');
@@ -313,6 +315,8 @@ const ProductDetailsPage = () => {
                     </div>
                 </div>
             </div>
+            <MoreItemsToExplore/>
+            <DisneysectionSection/>
 
             <Footer />
         </div>
