@@ -23,6 +23,7 @@ import ProductsYouMayAlsoLike from '../Components/ProductsYouMayAlsoLike';
 import CustomerRatingsSection from '../Components/CustomerRatingsSection';
 import MoreItemsToExplore from '../Components/MoreItemsToExplore';
 import DisneysectionSection from '../Components/Disneysection';
+import ProductsRelatedToThisItem from '../Components/ProductsRelatedToThisItem';
 
 const ProductDetailsPage = () => {
     const [selectedSize, setSelectedSize] = useState('XXL');
@@ -317,6 +318,7 @@ const ProductDetailsPage = () => {
             </div>
             <MoreItemsToExplore/>
             <DisneysectionSection/>
+            <ProductsRelatedToThisItem/>
 
             <Footer />
         </div>
