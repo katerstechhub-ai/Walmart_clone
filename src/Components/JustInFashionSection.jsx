@@ -315,7 +315,7 @@ const JustInFashionSection = () => {
                 )}
             </div>
 
-            <div className="border-b border-gray-200 mt-8"></div>
+            <div className="border-b border-gray-200 mt-14"></div>
 
         </div>
     );
