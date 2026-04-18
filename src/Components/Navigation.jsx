@@ -76,11 +76,10 @@ const Navigation = () => {
                                 <span className="text-xs mt-1">Sign In</span>
                             </button>
 
-                            <button className="flex flex-col items-center text-white hover:text-yellow-200">
-                                {/* REPLACE WITH CART ICON: <BsCart className="w-6 h-6" /> */}
+                            <Link to="/cart" className="flex flex-col items-center text-white hover:text-yellow-200">
                                 <span className="text-2xl"><BsCart className="w-6 h-6" /></span>
                                 <span className="text-xs mt-1">$5.22</span>
-                            </button>
+                            </Link>
                         </div>
 
                         {/* MOBILE ONLY - Hamburger Menu */}
