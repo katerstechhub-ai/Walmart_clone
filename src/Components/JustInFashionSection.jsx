@@ -252,7 +252,7 @@ const JustInFashionSection = () => {
     };
 
     return (
-        <div className="max-w-[1400px] mx-auto px-5 py-8">
+        <div className="max-w-[1400px] mx-auto px-5 py-4">
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold text-gray-800">Just in: fashion</h2>
@@ -315,7 +315,7 @@ const JustInFashionSection = () => {
                 )}
             </div>
 
-
+            <div className="border-b border-gray-200 mt-8"></div>
 
         </div>
     );
