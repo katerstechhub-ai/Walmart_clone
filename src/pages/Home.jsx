@@ -228,7 +228,7 @@ const Home = () => {
 
                     {/* First Div - Walmart+ Members */}
                     <div
-                        className="rounded-lg p-6 text-white w-[400px] flex flex-col justify-start gap-3 min-h-[500px] bg-cover bg-center relative overflow-hidden"
+                        className="rounded-lg p-6 text-white w-full flex flex-col justify-start gap-3 min-h-[300px] md:min-h-[500px] bg-cover bg-center relative overflow-hidden"
                         style={{ backgroundImage: "url(https://i5.walmartimages.com/dfw/4ff9c6c9-6e94/k2-_bf6a2072-1e14-4047-8d95-6ccc2fd414e8.v1.jpg?odnHeight=1316&odnWidth=1316&odnBg=&odnDynImageQuality=70)", backgroundColor: "#1d4ed8" }}
                     >
                         <div className="relative z-10">
@@ -245,7 +245,7 @@ const Home = () => {
                     <div className="flex flex-col gap-4">
                         {/* Top Banner - Patio refresh */}
                         <div
-                            className="rounded-lg p-6 flex-1 flex flex-col justify-start gap-3 bg-cover bg-center relative overflow-hidden"
+                            className="rounded-lg p-6 flex-1 flex flex-col justify-start gap-3 bg-cover bg-center relative overflow-hidden min-h-[150px]"
                             style={{ backgroundImage: "url('https://i5.walmartimages.com/dfw/4ff9c6c9-241a/k2-_441dbf96-c08d-4e99-b3ba-0fcc85ce81c6.v1.jpg?odnHeight=584&odnWidth=1024&odnBg=&odnDynImageQuality=70')" }}
                         >
                             <div className="absolute inset-0" />
@@ -261,7 +261,7 @@ const Home = () => {
                         <div className="grid grid-cols-2 gap-4 flex-1">
                             {/* Left - April showers */}
                             <div
-                                className="rounded-lg p-4 flex flex-col justify-start gap-3 bg-cover bg-center relative overflow-hidden"
+                                className="rounded-lg p-4 flex flex-col justify-start gap-3 bg-cover bg-center relative overflow-hidden min-h-[150px]"
                                 style={{ backgroundImage: "url('https://i5.walmartimages.com/dfw/4ff9c6c9-fd4c/k2-_28e6de0a-c134-4574-8413-81d21616131a.v1.jpg?odnHeight=684&odnWidth=496&odnBg=&odnDynImageQuality=70')", backgroundColor: "#eff6ff" }}
                             >
                                 <div className="absolute inset-0" />
@@ -276,7 +276,7 @@ const Home = () => {
 
                             {/* Right - Spring gift cards */}
                             <div
-                                className="rounded-lg p-4 flex flex-col justify-start gap-3 bg-cover bg-center relative overflow-hidden"
+                                className="rounded-lg p-4 flex flex-col justify-start gap-3 bg-cover bg-center relative overflow-hidden min-h-[150px]"
                                 style={{ backgroundImage: "url('https://i5.walmartimages.com/dfw/4ff9c6c9-21bd/k2-_bb3f3a53-6cf6-4634-b9ae-6fe417935890.v1.jpg?odnHeight=684&odnWidth=496&odnBg=&odnDynImageQuality=70')", backgroundColor: "#fdf2f8" }}
                             >
                                 <div className="absolute inset-0" />
@@ -293,7 +293,7 @@ const Home = () => {
 
                     {/* Third Div - Taxes done right */}
                     <div
-                        className="rounded-lg p-6 w-full flex flex-col justify-start gap-3 min-h-[500px] bg-cover bg-center relative overflow-hidden"
+                        className="rounded-lg p-6 w-full flex flex-col justify-start gap-3 min-h-[300px] md:min-h-[500px] bg-cover bg-center relative overflow-hidden"
                         style={{ backgroundImage: "url('https://i5.walmartimages.com/dfw/4ff9c6c9-7687/k2-_ba04f813-b876-4809-b527-a716d91c2644.v1.jpg?odnHeight=1316&odnWidth=770&odnBg=&odnDynImageQuality=70')", backgroundColor: "#fefce8" }}
                     >
                         <div className="absolute inset-0" />

@@ -16,25 +16,24 @@ const Navigation = () => {
 
     return (
         <nav className="sticky top-0 z-50 shadow-sm">
-            {/* Top Row - BLUE BACKGROUND */}
             <div className="bg-[#0071dc]">
                 <div className="max-w-[1400px] mx-auto px-5 py-3">
-                    {/* Main Row - Logo + Mobile Elements + Desktop Elements */}
-                    <div className="flex items-center justify-between lg:justify-start lg:gap-4">
-                        {/* Logo - Left side */}
+                    <div className="flex items-center justify-between">
+                        {/* Logo */}
                         <div className="flex-shrink-0">
-                            <img
-                                src="/walmart-logo.png"
-                                alt="Walmart"
-                                className="h-8 lg:h-10 w-auto"
-                            />
+                            <Link to="/">
+                                <img
+                                    src="https://i5.walmartimages.com/dfw/4ff9c6c9-af86/k2-_47db52a8-75b4-4c98-868a-4cf9248272c5.v1.svg"
+                                    alt="Walmart"
+                                    className="h-8 lg:h-10 w-auto"
+                                />
+                            </Link>
                         </div>
 
                         {/* DESKTOP ONLY - Pickup/Delivery Button */}
                         <button className="hidden lg:flex items-center w-[20%] gap-2 bg-blue-800 border rounded-full px-4 py-2 border-blue-500 transition-colors">
-                            {/* REPLACE WITH LOCATION ICON: <BsGeoAlt className="w-6 h-6 text-white" /> */}
                             <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-blue-800">
-                                <BsGeoAlt className="w-6 h-6 text-white" />
+                                <BsGeoAlt className="w-4 h-4 text-blue-800" />
                             </div>
                             <div className="text-left">
                                 <div className="text-xs text-white">Pickup or delivery?</div>
@@ -52,12 +51,8 @@ const Navigation = () => {
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="flex-1 px-5 py-3 bg-white border border-blue-600 border-r-0 rounded-l-full text-blue-800 placeholder:text-blue-800 text-md outline-none focus:ring-2 focus:ring-blue-300"
                                 />
-                                <button
-                                    type="submit"
-                                    className="px-4  bg-blue rounded-r-full transition-colors flex items-center justify-center"
-                                >
-                                    {/* REPLACE WITH SEARCH ICON: <BsSearch className="w-6 h-6 text-blue-600" /> */}
-                                    <span className="text-blue-600  text-xl"><BsSearch className="w-6 h-4 text-white " /></span>
+                                <button type="submit" className="px-4 bg-white rounded-r-full transition-colors flex items-center justify-center">
+                                    <BsSearch className="w-5 h-5 text-blue-600" />
                                 </button>
                             </form>
                         </div>
@@ -65,38 +60,36 @@ const Navigation = () => {
                         {/* DESKTOP ONLY - Right Icons */}
                         <div className="hidden lg:flex items-center gap-4">
                             <button className="flex flex-col items-center text-white hover:text-yellow-200">
-                                {/* REPLACE WITH HEART ICON: <BsHeart className="w-6 h-6" /> */}
-                                <span className="text-2xl"><BsHeart className="w-6 h-6" /></span>
+                                <BsHeart className="w-6 h-6" />
                                 <span className="text-xs mt-1">Favorites</span>
                             </button>
-
-                            <button className="flex flex-col items-center text-white hover:text-yellow-200">
-                                {/* REPLACE WITH USER ICON: <BsPerson className="w-6 h-6" /> */}
-                                <span className="text-2xl"><BsPerson className="w-6 h-6" /> </span>
+                            <Link to="/signin" className="flex flex-col items-center text-white hover:text-yellow-200">
+                                <BsPerson className="w-6 h-6" />
                                 <span className="text-xs mt-1">Sign In</span>
-                            </button>
-
+                            </Link>
                             <Link to="/cart" className="flex flex-col items-center text-white hover:text-yellow-200">
-                                <span className="text-2xl"><BsCart className="w-6 h-6" /></span>
+                                <BsCart className="w-6 h-6" />
                                 <span className="text-xs mt-1">$5.22</span>
                             </Link>
                         </div>
 
-                        {/* MOBILE ONLY - Hamburger Menu */}
-                        <button
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="lg:hidden text-white text-2xl"
-                        >
-                            {/* REPLACE WITH MENU ICON: <BsList className="w-6 h-6" /> */}
-                            <BsList className="w-6 h-6" />
-                        </button>
-
-                        {/* MOBILE ONLY - Search Text and Cart */}
+                        {/* MOBILE ONLY - Right side icons */}
                         <div className="flex items-center gap-3 lg:hidden">
-                            <span className="text-white text-sm">Search Walmart</span>
-                            {/* REPLACE WITH SEARCH ICON: <BsSearch className="text-white text-xl" /> */}
-                            <button className="text-white text-xl"><BsSearch className="text-blue-600 text-xl" /> </button>
-                            <button className="text-white font-bold text-sm">$0.00</button>
+                            <button className="text-white">
+                                <BsSearch className="w-5 h-5" />
+                            </button>
+                            <Link to="/signin" className="text-white">
+                                <BsPerson className="w-5 h-5" />
+                            </Link>
+                            <Link to="/cart" className="text-white">
+                                <BsCart className="w-5 h-5" />
+                            </Link>
+                            <button
+                                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                                className="text-white"
+                            >
+                                <BsList className="w-6 h-6" />
+                            </button>
                         </div>
                     </div>
 
@@ -107,7 +100,7 @@ const Navigation = () => {
                         </div>
                     </div>
 
-                    {/* MOBILE ONLY - Search Bar (hidden, just showing text as per your screenshot) */}
+                    {/* MOBILE ONLY - Search Bar */}
                     <div className="lg:hidden mt-2">
                         <form onSubmit={handleSearch} className="flex w-full">
                             <input
@@ -117,31 +110,25 @@ const Navigation = () => {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="flex-1 px-4 py-2 bg-white border border-blue-600 border-r-0 rounded-l-full text-blue-800 placeholder:text-blue-400 text-sm outline-none"
                             />
-                            <button
-                                type="submit"
-                                className="px-4 bg-white rounded-r-full flex items-center justify-center"
-                            >
-                                {/* REPLACE WITH SEARCH ICON: <BsSearch className="text-blue-600 text-xl" /> */}
-                                <span className="text-blue-600 text-xl"><BsSearch className="text-blue-600 text-xl" /> </span>
+                            <button type="submit" className="px-4 bg-white rounded-r-full flex items-center justify-center">
+                                <BsSearch className="text-blue-600 w-4 h-4" />
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
 
-            {/* MOBILE MENU - Shows when hamburger is clicked */}
+            {/* MOBILE MENU */}
             {isMobileMenuOpen && (
                 <div className="lg:hidden bg-white border-b border-gray-200 shadow-lg max-h-96 overflow-y-auto">
                     <div className="px-5 py-3">
                         <div className="flex flex-col gap-2">
-                            {/* Departments */}
                             <button
                                 onClick={() => setIsDepartmentsOpen(!isDepartmentsOpen)}
                                 className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-100 w-full text-left"
                             >
                                 <span>Departments</span>
-                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
-                                <span> <BsChevronDown className="w-4 h-4" /></span>
+                                <BsChevronDown className="w-4 h-4" />
                             </button>
                             {isDepartmentsOpen && (
                                 <div className="pl-4 space-y-1">
@@ -153,14 +140,12 @@ const Navigation = () => {
                                 </div>
                             )}
 
-                            {/* Services */}
                             <button
                                 onClick={() => setIsServicesOpen(!isServicesOpen)}
                                 className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-100 w-full text-left"
                             >
                                 <span>Services</span>
-                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
-                                <span> <BsChevronDown className="w-4 h-4" /></span>
+                                <BsChevronDown className="w-4 h-4" />
                             </button>
                             {isServicesOpen && (
                                 <div className="pl-4 space-y-1">
@@ -174,22 +159,16 @@ const Navigation = () => {
                             <button className="px-3 py-2 text-left rounded-lg hover:bg-gray-100">Mother's Day</button>
                             <button className="px-3 py-2 text-left rounded-lg hover:bg-gray-100">Get it Fast</button>
                             <button className="px-3 py-2 text-left rounded-lg hover:bg-gray-100">Pharmacy</button>
-
-                            <Link to="/new-arrivals" className="px-2 py-1 rounded-full hover:border-blue-500 bg-white transition-colors text-sm border border-transparent text-gray-700">
-                                New Arrivals
-                            </Link>
-
+                            <Link to="/new-arrivals" className="px-3 py-2 text-left rounded-lg hover:bg-gray-100 text-sm text-gray-700">New Arrivals</Link>
                             <button className="px-3 py-2 text-left rounded-lg hover:bg-gray-100">bettergoods</button>
                             <button className="px-3 py-2 text-left rounded-lg hover:bg-gray-100">Walmart+</button>
 
-                            {/* More */}
                             <button
                                 onClick={() => setIsMoreOpen(!isMoreOpen)}
                                 className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-100 w-full text-left"
                             >
                                 <span>More</span>
-                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
-                                <span> <BsChevronDown className="w-4 h-4" /></span>
+                                <BsChevronDown className="w-4 h-4" />
                             </button>
                             {isMoreOpen && (
                                 <div className="pl-4 space-y-1">
@@ -204,21 +183,18 @@ const Navigation = () => {
                 </div>
             )}
 
-            {/* DESKTOP BOTTOM NAVIGATION - Hidden on mobile */}
+            {/* DESKTOP BOTTOM NAVIGATION */}
             <div className="hidden lg:block bg-blue-50 border-b border-gray-200">
                 <div className="max-w-[1400px] mx-auto px-5">
                     <div className="flex items-center gap-3 py-2">
-                        {/* Departments Dropdown */}
                         <div className="relative">
                             <button
                                 onClick={() => setIsDepartmentsOpen(!isDepartmentsOpen)}
                                 className="flex items-center gap-1 px-2 py-1 rounded-full hover:border-blue-500 bg-white transition-colors border border-transparent text-gray-700"
                             >
                                 <span className="text-sm">Departments</span>
-                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
-                                <span className="text-xs"> <BsChevronDown className="w-4 h-4" /> </span>
+                                <BsChevronDown className="w-4 h-4" />
                             </button>
-
                             {isDepartmentsOpen && (
                                 <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
                                     <div className="p-3">
@@ -232,17 +208,14 @@ const Navigation = () => {
                             )}
                         </div>
 
-                        {/* Services Dropdown */}
                         <div className="relative">
                             <button
                                 onClick={() => setIsServicesOpen(!isServicesOpen)}
                                 className="flex items-center gap-1 px-2 py-1 rounded-full hover:border-blue-500 bg-white transition-colors border border-transparent text-gray-700"
                             >
                                 <span className="text-sm">Services</span>
-                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
-                                <span className="text-xs"> <BsChevronDown className="w-4 h-4" /> </span>
+                                <BsChevronDown className="w-4 h-4" />
                             </button>
-
                             {isServicesOpen && (
                                 <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
                                     <div className="p-3">
@@ -256,46 +229,22 @@ const Navigation = () => {
                             )}
                         </div>
 
-                        {/* Regular Buttons */}
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white transition-colors text-sm border border-transparent text-gray-700">
-                            Rollbacks & More
-                        </button>
+                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white transition-colors text-sm border border-transparent text-gray-700">Rollbacks & More</button>
+                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">Mother's Day</button>
+                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">Get it Fast</button>
+                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">Pharmacy</button>
+                        <Link to="/new-arrivals" className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">New Arrivals</Link>
+                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">bettergoods</button>
+                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">Walmart+</button>
 
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">
-                            Mother's Day
-                        </button>
-
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">
-                            Get it Fast
-                        </button>
-
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">
-                            Pharmacy
-                        </button>
-
-                        <Link to="/new-arrivals" className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">
-                            New Arrivals
-                        </Link>
-
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">
-                            bettergoods
-                        </button>
-
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">
-                            Walmart+
-                        </button>
-
-                        {/* More Dropdown */}
                         <div className="relative mx-auto">
                             <button
                                 onClick={() => setIsMoreOpen(!isMoreOpen)}
                                 className="flex items-center gap-1 px-2 py-1 rounded-full hover:border-blue-500 bg-white transition-colors border border-transparent text-gray-700"
                             >
                                 <span className="text-sm">More</span>
-                                {/* REPLACE WITH CHEVRON DOWN ICON: <BsChevronDown className="w-4 h-4" /> */}
-                                <span className="text-xs"> <BsChevronDown className="w-4 h-4" /></span>
+                                <BsChevronDown className="w-4 h-4" />
                             </button>
-
                             {isMoreOpen && (
                                 <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
                                     <div className="p-3">
