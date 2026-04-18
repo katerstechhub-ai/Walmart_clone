@@ -24,6 +24,8 @@ import CustomerRatingsSection from '../Components/CustomerRatingsSection';
 import MoreItemsToExplore from '../Components/MoreItemsToExplore';
 import DisneysectionSection from '../Components/Disneysection';
 import ProductsRelatedToThisItem from '../Components/ProductsRelatedToThisItem';
+import { useLocation } from 'react-router-dom';
+
 
 const ProductDetailsPage = () => {
     const [selectedSize, setSelectedSize] = useState('XXL');
@@ -32,6 +34,8 @@ const ProductDetailsPage = () => {
     const [showKeyFeatures, setShowKeyFeatures] = useState(true);
     const [currentImage, setCurrentImage] = useState(0);
     const [previewImage, setPreviewImage] = useState(null);
+    const { state } = useLocation();
+    const product = state?.product;
 
     // Product images for slider
     const productImages = [
@@ -193,12 +197,12 @@ const ProductDetailsPage = () => {
                                 </div>
                             </div>
                         </div>
-                        <RatingsSection/>
-                        <RecentlyViewedSection/>
-                        <AboutThisItem/>
-                        <PopularItemsSection/>
-                        <ProductsYouMayAlsoLike/>
-                        <CustomerRatingsSection/>
+                        <RatingsSection />
+                        <RecentlyViewedSection />
+                        <AboutThisItem />
+                        <PopularItemsSection />
+                        <ProductsYouMayAlsoLike />
+                        <CustomerRatingsSection />
                     </div>
 
                     {/* RIGHT DIV - Made slimmer */}
@@ -316,9 +320,9 @@ const ProductDetailsPage = () => {
                     </div>
                 </div>
             </div>
-            <MoreItemsToExplore/>
-            <DisneysectionSection/>
-            <ProductsRelatedToThisItem/>
+            <MoreItemsToExplore />
+            <DisneysectionSection />
+            <ProductsRelatedToThisItem />
 
             <Footer />
         </div>

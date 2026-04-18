@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BsSearch, BsHeart, BsPerson, BsCart, BsGeoAlt, BsChevronDown, BsList } from "react-icons/bs";
+import { Link } from 'react-router-dom';
 
 const Navigation = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -33,7 +34,7 @@ const Navigation = () => {
                         <button className="hidden lg:flex items-center w-[20%] gap-2 bg-blue-800 border rounded-full px-4 py-2 border-blue-500 transition-colors">
                             {/* REPLACE WITH LOCATION ICON: <BsGeoAlt className="w-6 h-6 text-white" /> */}
                             <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-blue-800">
-                                <BsGeoAlt className="w-6 h-6 text-white" /> 
+                                <BsGeoAlt className="w-6 h-6 text-white" />
                             </div>
                             <div className="text-left">
                                 <div className="text-xs text-white">Pickup or delivery?</div>
@@ -88,7 +89,7 @@ const Navigation = () => {
                             className="lg:hidden text-white text-2xl"
                         >
                             {/* REPLACE WITH MENU ICON: <BsList className="w-6 h-6" /> */}
-                           <BsList className="w-6 h-6" />
+                            <BsList className="w-6 h-6" />
                         </button>
 
                         {/* MOBILE ONLY - Search Text and Cart */}
@@ -174,7 +175,11 @@ const Navigation = () => {
                             <button className="px-3 py-2 text-left rounded-lg hover:bg-gray-100">Mother's Day</button>
                             <button className="px-3 py-2 text-left rounded-lg hover:bg-gray-100">Get it Fast</button>
                             <button className="px-3 py-2 text-left rounded-lg hover:bg-gray-100">Pharmacy</button>
-                            <button className="px-3 py-2 text-left rounded-lg hover:bg-gray-100">New Arrivals</button>
+
+                            <Link to="/new-arrivals" className="px-2 py-1 rounded-full hover:border-blue-500 bg-white transition-colors text-sm border border-transparent text-gray-700">
+                                New Arrivals
+                            </Link>
+
                             <button className="px-3 py-2 text-left rounded-lg hover:bg-gray-100">bettergoods</button>
                             <button className="px-3 py-2 text-left rounded-lg hover:bg-gray-100">Walmart+</button>
 
@@ -269,9 +274,9 @@ const Navigation = () => {
                             Pharmacy
                         </button>
 
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">
+                        <Link to="/new-arrivals" className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">
                             New Arrivals
-                        </button>
+                        </Link>
 
                         <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">
                             bettergoods
