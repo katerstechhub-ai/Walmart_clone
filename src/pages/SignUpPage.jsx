@@ -56,13 +56,11 @@ const SignUpPage = () => {
         <div className="min-h-screen flex flex-col">
             {/* Logo */}
             <div className="max-w-[1400px] mx-auto px-5 py-4">
-                <Link to="/">
                     <img
                         src="https://i5.walmartimages.com/dfw/4ff9c6c9-af86/k2-_47db52a8-75b4-4c98-868a-4cf9248272c5.v1.svg"
                         alt="Walmart"
                         className="h-17 w-17"
                     />
-                </Link>
             </div>
 
             {/* Form centered */}

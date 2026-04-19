@@ -31,7 +31,10 @@ import {
     getUsers,
     updateUser,
     deleteUser as deleteUserApi,
-    changeUserPassword
+    changeUserPassword,
+    createCategory,
+    updateCategory,
+    deleteCategory
 } from '../../api';
 
 const AdminDashboard = () => {
@@ -53,6 +56,17 @@ const AdminDashboard = () => {
     const [showUserModal, setShowUserModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
+
+    // Category Modal States
+    const [showCategoryModal, setShowCategoryModal] = useState(false);
+    const [editingCategory, setEditingCategory] = useState(null);
+    const [categoryImageInput, setCategoryImageInput] = useState('');
+    const [newCategory, setNewCategory] = useState({
+        name: '',
+        description: '',
+        image: '',
+        merchant_id: ''
+    });
 
     // New product state
     const [newProduct, setNewProduct] = useState({
@@ -132,13 +146,15 @@ const AdminDashboard = () => {
                     getSales(merchantId),
                     getUsers(merchantId)
                 ]);
-                setProducts(productsRes.data?.data || productsRes.data || []);
+                console.log('Products response:', productsRes.data);
+                console.log('Categories response:', categoriesRes.data);
+                setProducts(productsRes.data?.data || productsRes.data?.products || productsRes.data || []);
+                setCategories(categoriesRes.data?.data || categoriesRes.data?.categories || categoriesRes.data || []);
                 setCategories(categoriesRes.data?.data || categoriesRes.data || []);
                 setSales(salesRes.data?.data || salesRes.data || []);
                 setUsers(usersRes.data?.data || usersRes.data || []);
             }
 
-            // Fetch carts based on user IDs from sales
             await fetchAllCarts();
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -169,6 +185,88 @@ const AdminDashboard = () => {
         } catch (error) {
             console.error('Error fetching carts:', error);
             setCarts([]);
+        }
+    };
+
+    // ========== CATEGORY CRUD FUNCTIONS ==========
+    const openCreateCategoryModal = () => {
+        setEditingCategory(null);
+        setNewCategory({
+            name: '',
+            description: '',
+            image: '',
+            merchant_id: merchantData?.id || merchantData?._id || ''
+        });
+        setCategoryImageInput('');
+        setShowCategoryModal(true);
+    };
+
+    const openEditCategoryModal = (category) => {
+        setEditingCategory(category);
+        setNewCategory({
+            name: category.name || '',
+            description: category.description || '',
+            image: category.image || '',
+            merchant_id: merchantData?.id || merchantData?._id || ''
+        });
+        setCategoryImageInput('');
+        setShowCategoryModal(true);
+    };
+
+    const handleSaveCategory = async (e) => {
+        e.preventDefault();
+        setSubmitting(true);
+        setError('');
+        setSuccess('');
+
+        try {
+            if (!newCategory.name) throw new Error('Category name is required');
+
+            const categoryData = {
+                name: newCategory.name,
+                description: newCategory.description || '',
+                image: newCategory.image || '',
+                merchant_id: newCategory.merchant_id
+            };
+
+            let response;
+            if (editingCategory) {
+                const categoryId = editingCategory.id || editingCategory._id;
+                response = await updateCategory(categoryId, categoryData);
+            } else {
+                response = await createCategory(categoryData);
+            }
+
+            if (response.status === 200 || response.status === 201) {
+                setSuccess(editingCategory ? 'Category updated successfully!' : 'Category created successfully!');
+                setShowCategoryModal(false);
+                await fetchAllData(merchantData);
+                setTimeout(() => setSuccess(''), 3000);
+            } else {
+                throw new Error(response.data?.message || 'Failed to save category');
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || err.message || 'Failed to save category');
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const handleDeleteCategory = async (categoryId, categoryName) => {
+        if (window.confirm(`Are you sure you want to delete category "${categoryName}"? This will also delete all products in this category.`)) {
+            try {
+                const response = await deleteCategory(categoryId);
+                if (response.status === 200 || response.status === 204) {
+                    setSuccess('Category deleted successfully!');
+                    await fetchAllData(merchantData);
+                    setTimeout(() => setSuccess(''), 3000);
+                } else {
+                    throw new Error('Failed to delete category');
+                }
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                setError('Failed to delete category');
+            }
         }
     };
 
@@ -432,16 +530,25 @@ const AdminDashboard = () => {
                 {sidebarOpen ? <FaTimes /> : <FaBars />}
             </button>
 
-            {/* Sidebar - Blue Theme */}
-            <div className={`fixed top-0 left-0 h-full w-64 bg-blue-800 text-white transform transition-transform duration-300 z-40 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-                <div className="p-5 border-b border-blue-700">
-                    <h1 className="text-xl font-bold">Walmart Admin</h1>
+            {/* Sidebar - Blue Theme with Scroll */}
+            <div className={`fixed top-0 left-0 h-full w-64 bg-blue-800 text-white transform transition-transform duration-300 z-40 flex flex-col ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+                {/* Header - Fixed at top */}
+                <div className="p-5 border-b border-blue-700 italic flex-shrink-0">
+                    <h1 className="text-xl font-bold flex items-center gap-2">
+                        <img
+                            src="https://i5.walmartimages.com/dfw/4ff9c6c9-af86/k2-_47db52a8-75b4-4c98-868a-4cf9248272c5.v1.svg"
+                            alt="Walmart"
+                            className="h-8 w-8"
+                        />
+                        Walmart Admin
+                    </h1>
                     {merchantData && (
-                        <p className="text-sm text-blue-200 mt-1">{merchantData.store_name}</p>
+                        <p className="text-sm text-blue-200 mt-1 truncate">{merchantData.store_name}</p>
                     )}
                 </div>
 
-                <nav className="p-4">
+                {/* Scrollable Navigation */}
+                <nav className="flex-1 overflow-y-auto p-4">
                     {sidebarLinks.map((link) => (
                         <button
                             key={link.id}
@@ -452,15 +559,18 @@ const AdminDashboard = () => {
                             <span>{link.label}</span>
                         </button>
                     ))}
+                </nav>
 
+                {/* Logout Button - Fixed at bottom */}
+                <div className="p-4 border-t border-blue-700 flex-shrink-0">
                     <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg mt-4 text-blue-200 hover:bg-blue-700 hover:text-white transition-colors"
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-blue-200 hover:bg-blue-700 hover:text-white transition-colors"
                     >
                         <FaSignOutAlt />
                         <span>Sign Out</span>
                     </button>
-                </nav>
+                </div>
             </div>
 
             {/* Overlay for mobile */}
@@ -471,7 +581,7 @@ const AdminDashboard = () => {
             {/* Main Content */}
             <div className="lg:ml-64 p-6">
                 <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-                    <h2 className="text-2xl font-bold text-gray-800">
+                    <h2 className="text-2xl font-bold text-blue-800 italic">
                         {activeTab === 'dashboard' && 'Dashboard'}
                         {activeTab === 'products' && 'Products Management'}
                         {activeTab === 'create-product' && 'Create New Product'}
@@ -502,7 +612,7 @@ const AdminDashboard = () => {
                             {stats.map((stat, index) => (
                                 <div key={index} className="bg-white rounded-lg shadow-sm p-6 flex items-center justify-between">
                                     <div>
-                                        <p className="text-gray-500 text-sm">{stat.title}</p>
+                                        <p className="text-gray-600 text-sm">{stat.title}</p>
                                         <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
                                     </div>
                                     <div className={`${stat.color} p-3 rounded-full text-white`}>
@@ -514,13 +624,13 @@ const AdminDashboard = () => {
 
                         <div className="bg-white rounded-lg shadow-sm p-6">
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-lg font-semibold text-gray-800">Recent Products (Top 10)</h3>
+                                <h3 className="text-lg font-semibold text-blue-900 italic">Recent Products (Top 10)</h3>
                                 <button onClick={() => setActiveTab('products')} className="text-blue-600 text-sm hover:underline">View All</button>
                             </div>
                             <div className="overflow-x-auto">
                                 <table className="w-full">
                                     <thead className="border-b">
-                                        <tr className="text-left text-sm text-gray-500">
+                                        <tr className="text-left text-sm text-blue-800 italic">
                                             <th className="pb-2">S/N</th>
                                             <th className="pb-2">PRODUCT NAME</th>
                                             <th className="pb-2">PRICE</th>
@@ -558,7 +668,7 @@ const AdminDashboard = () => {
                 {activeTab === 'products' && (
                     <div className="bg-white rounded-lg shadow-sm p-6">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-semibold text-gray-800">All Products</h3>
+                            <h3 className="text-lg font-semibold text-blue-800 italic">All Products</h3>
                             <button onClick={() => setActiveTab('create-product')} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-blue-700">
                                 <FaPlus /> Add Product
                             </button>
@@ -566,7 +676,7 @@ const AdminDashboard = () => {
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead className="border-b">
-                                    <tr className="text-left text-sm text-gray-500">
+                                    <tr className="text-left text-sm text-blue-800">
                                         <th className="pb-2">Image</th>
                                         <th className="pb-2">Title</th>
                                         <th className="pb-2">Price</th>
@@ -584,8 +694,8 @@ const AdminDashboard = () => {
                                             <td className="py-3">
                                                 <div className="flex gap-2">
                                                     <button className="text-blue-600 hover:text-blue-800"><FaEye /></button>
-                                                    <button className="text-green-600 hover:text-green-800"><FaEdit /></button>
-                                                    <button onClick={() => handleDeleteProduct(product.id || product._id)} className="text-red-600 hover:text-red-800"><FaTrash /></button>
+                                                    <button className="text-blue-800 hover:text-blue-400"><FaEdit /></button>
+                                                    <button onClick={() => handleDeleteProduct(product.id || product._id)} className="text-red-700 hover:text-red-400"><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -602,28 +712,28 @@ const AdminDashboard = () => {
                 {/* Create Product Tab */}
                 {activeTab === 'create-product' && (
                     <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Create New Product</h3>
+                        <h3 className="text-lg font-semibold text-blue-800 italic mb-4">Create New Product</h3>
                         <form onSubmit={handleCreateProduct}>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+                                <label className="block text-sm font-medium text-blue-800 italic mb-1">Title *</label>
                                 <input type="text" value={newProduct.title} onChange={(e) => setNewProduct({ ...newProduct, title: e.target.value })} className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                <label className="block text-sm font-medium text-blue-800 italic mb-1">Description</label>
                                 <textarea rows="3" value={newProduct.descp} onChange={(e) => setNewProduct({ ...newProduct, descp: e.target.value })} className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </div>
                             <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Price ($) *</label>
+                                    <label className="block text-sm font-medium text-blue-800 italic mb-1">Price ($) *</label>
                                     <input type="number" step="0.01" value={newProduct.price} onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Quantity *</label>
+                                    <label className="block text-sm font-medium text-blue-800 italic mb-1">Quantity *</label>
                                     <input type="number" value={newProduct.quantity} onChange={(e) => setNewProduct({ ...newProduct, quantity: e.target.value })} className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                                 </div>
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Images (URLs) *</label>
+                                <label className="block text-sm font-medium text-blue-800 italic mb-1">Images (URLs) *</label>
                                 <div className="flex gap-2 mb-2">
                                     <input type="text" value={imageInput} onChange={(e) => setImageInput(e.target.value)} placeholder="Enter image URL" className="flex-1 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                                     <button type="button" onClick={addImage} className="bg-gray-200 px-4 rounded-lg hover:bg-gray-300">Add</button>
@@ -639,13 +749,16 @@ const AdminDashboard = () => {
                                 <p className="text-xs text-gray-500 mt-1">Maximum 5 images. Add at least one image.</p>
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                                <label className="block text-sm font-medium text-blue-800 italic mb-1">Category *</label>
                                 <select value={newProduct.category_id} onChange={(e) => setNewProduct({ ...newProduct, category_id: e.target.value })} className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                                     <option value="">Select a category</option>
                                     {categories.map((cat) => (
                                         <option key={cat.id || cat._id} value={cat.id || cat._id}>{cat.name}</option>
                                     ))}
                                 </select>
+                                {categories.length === 0 && (
+                                    <p className="text-xs text-red-500 mt-1">No categories available. Please create a category first.</p>
+                                )}
                             </div>
                             <div className="flex gap-3">
                                 <button type="submit" disabled={submitting} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50">
@@ -657,43 +770,76 @@ const AdminDashboard = () => {
                     </div>
                 )}
 
-                {/* Categories Tab */}
+                {/* Categories Tab with Create Category */}
                 {activeTab === 'categories' && (
                     <div className="bg-white rounded-lg shadow-sm p-6">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-semibold text-gray-800">All Categories</h3>
-                            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-blue-700">
+                            <h3 className="text-lg font-semibold text-blue-800 italic">All Categories</h3>
+                            <button
+                                onClick={openCreateCategoryModal}
+                                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-blue-700"
+                            >
                                 <FaPlus /> Add Category
                             </button>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {categories.map((category) => (
-                                <div key={category.id || category._id} className="border rounded-lg p-4 flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        {category.image && <img src={category.image} alt={category.name} className="w-12 h-12 object-cover rounded" />}
-                                        <span className="font-medium">{category.name}</span>
+
+                        {categories.length === 0 ? (
+                            <div className="text-center text-blue-800 italic py-12">
+                                <FaTags className="text-5xl mx-auto mb-3 text-gray-300" />
+                                <p>No categories yet.</p>
+                                <p className="text-sm mt-1">Click "Add Category" to create your first category</p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                {categories.map((category) => (
+                                    <div key={category.id || category._id} className="border rounded-lg p-4 flex items-center justify-between hover:shadow-md transition-shadow">
+                                        <div className="flex items-center gap-3 flex-1">
+                                            {category.image && (
+                                                <img
+                                                    src={category.image}
+                                                    alt={category.name}
+                                                    className="w-12 h-12 object-cover rounded"
+                                                    onError={(e) => e.target.style.display = 'none'}
+                                                />
+                                            )}
+                                            <div>
+                                                <span className="font-medium text-gray-800">{category.name}</span>
+                                                {category.description && (
+                                                    <p className="text-xs text-gray-500 mt-1 line-clamp-2">{category.description}</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => openEditCategoryModal(category)}
+                                                className="text-blue-600 hover:text-blue-800 transition-colors"
+                                                title="Edit Category"
+                                            >
+                                                <FaEdit />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteCategory(category.id || category._id, category.name)}
+                                                className="text-red-600 hover:text-red-800 transition-colors"
+                                                title="Delete Category"
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div className="flex gap-2">
-                                        <button className="text-green-600 hover:text-green-800"><FaEdit /></button>
-                                        <button className="text-red-600 hover:text-red-800"><FaTrash /></button>
-                                    </div>
-                                </div>
-                            ))}
-                            {categories.length === 0 && (
-                                <div className="col-span-full text-center text-gray-500 py-6">No categories yet.</div>
-                            )}
-                        </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
 
                 {/* Orders Tab */}
                 {activeTab === 'orders' && (
                     <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">All Orders</h3>
+                        <h3 className="text-lg font-semibold text-blue-800 italic mb-4">All Orders</h3>
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead className="border-b">
-                                    <tr className="text-left text-sm text-gray-500">
+                                    <tr className="text-left text-sm text-blue-800 italic">
                                         <th className="pb-2">Order ID</th>
                                         <th className="pb-2">Customer</th>
                                         <th className="pb-2">Amount</th>
@@ -720,7 +866,7 @@ const AdminDashboard = () => {
                                         </tr>
                                     ))}
                                     {sales.length === 0 && (
-                                        <tr><td colSpan="6" className="py-6 text-center text-gray-500">No orders yet</td></tr>
+                                        <tr><td colSpan="6" className="py-6 text-center text-blue-800 italic">No orders yet</td></tr>
                                     )}
                                 </tbody>
                             </table>
@@ -732,25 +878,25 @@ const AdminDashboard = () => {
                 {activeTab === 'users' && (
                     <div className="bg-white rounded-lg shadow-sm p-6">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-semibold text-gray-800">Users</h3>
+                            <h3 className="text-lg font-semibold text-blue-800 italic">Users</h3>
                             <button onClick={() => setActiveTab('create-user')} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-blue-700">
                                 <FaPlus /> Add New User
                             </button>
                         </div>
                         <div className="mb-4 relative">
-                            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-800" />
                             <input
                                 type="text"
                                 placeholder="Search users by name, email or phone..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full pl-10 pr-4 py-2 border border-gray-300 text-blue-800 italic rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead className="border-b">
-                                    <tr className="text-left text-sm text-gray-500">
+                                    <tr className="text-left text-sm text-blue-800 italic">
                                         <th className="pb-2">#</th>
                                         <th className="pb-2">NAME</th>
                                         <th className="pb-2">EMAIL</th>
@@ -815,8 +961,8 @@ const AdminDashboard = () => {
                                             <td colSpan="7" className="py-12 text-center">
                                                 <div className="flex flex-col items-center justify-center">
                                                     <FaUsers className="text-gray-300 text-5xl mb-3" />
-                                                    <p className="text-gray-500">No users found</p>
-                                                    <p className="text-gray-400 text-sm mt-1">Click "Add New User" to create your first user</p>
+                                                    <p className="text-blue-800 italic">No users found</p>
+                                                    <p className="text-blue-800 italic text-sm mt-1">Click "Add New User" to create your first user</p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -830,62 +976,62 @@ const AdminDashboard = () => {
                 {/* Create User Tab */}
                 {activeTab === 'create-user' && (
                     <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Create New User</h3>
+                        <h3 className="text-lg font-semibold text-blue-800 italic mb-4">Create New User</h3>
                         <form onSubmit={handleCreateUser}>
                             <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                                    <label className="block text-sm font-medium text-blue-800 italic mb-1">First Name *</label>
                                     <input
                                         type="text"
                                         value={newUser.first_name}
                                         onChange={(e) => setNewUser({ ...newUser, first_name: e.target.value })}
                                         placeholder="e.g., John"
-                                        className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full border border-gray-300 text-blue-800 italic rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                                    <label className="block text-sm font-medium text-blue-800 italic mb-1">Last Name *</label>
                                     <input
                                         type="text"
                                         value={newUser.last_name}
                                         onChange={(e) => setNewUser({ ...newUser, last_name: e.target.value })}
                                         placeholder="e.g., Doe"
-                                        className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full border border-gray-300 text-blue-800 italic rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         required
                                     />
                                 </div>
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                <label className="block text-sm font-medium text-blue-800 italic mb-1">Email Address *</label>
                                 <input
                                     type="email"
                                     value={newUser.email}
                                     onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
                                     placeholder="user@example.com"
-                                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full border border-gray-300 text-blue-800 italic rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                                <label className="block text-sm font-medium text-blue-800 italic mb-1">Phone Number *</label>
                                 <input
                                     type="tel"
                                     value={newUser.phone}
                                     onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
                                     placeholder="+234 801 234 5678"
-                                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full border border-gray-300 text-blue-800 italic rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Password *</label>
+                                <label className="block text-sm font-medium text-blue-800 italic mb-1">Password *</label>
                                 <input
                                     type="password"
                                     value={newUser.password}
                                     onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                                     placeholder="Minimum 6 characters"
-                                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full border border-gray-300 text-blue-800 italic rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
                                 <p className="text-xs text-gray-500 mt-1">Password must be at least 6 characters</p>
@@ -913,7 +1059,7 @@ const AdminDashboard = () => {
                 {/* Cart Tab */}
                 {activeTab === 'cart' && (
                     <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Cart Management</h3>
+                        <h3 className="text-lg font-semibold text-blue-800 italic mb-4">Cart Management</h3>
 
                         {loading ? (
                             <div className="text-center py-8">Loading carts...</div>
@@ -929,28 +1075,28 @@ const AdminDashboard = () => {
                                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                                             <div className="bg-blue-50 rounded-lg p-4 text-center">
                                                 <p className="text-2xl font-bold text-blue-600">{cartsArray.length}</p>
-                                                <p className="text-sm text-gray-600">Active Carts</p>
+                                                <p className="text-sm text-blue-800 italic">Active Carts</p>
                                             </div>
                                             <div className="bg-green-50 rounded-lg p-4 text-center">
                                                 <p className="text-2xl font-bold text-green-600">{totalItems}</p>
-                                                <p className="text-sm text-gray-600">Total Items</p>
+                                                <p className="text-sm text-blue-800 italic">Total Items</p>
                                             </div>
                                             <div className="bg-purple-50 rounded-lg p-4 text-center">
                                                 <p className="text-2xl font-bold text-purple-600">${totalValue.toLocaleString()}</p>
-                                                <p className="text-sm text-gray-600">Cart Value</p>
+                                                <p className="text-sm text-blue-800 italic">Cart Value</p>
                                             </div>
                                             <div className="bg-yellow-50 rounded-lg p-4 text-center">
                                                 <p className="text-2xl font-bold text-yellow-600">{uniqueUsers}</p>
-                                                <p className="text-sm text-gray-600">Unique Users</p>
+                                                <p className="text-sm text-blue-800 italic">Unique Users</p>
                                             </div>
                                         </div>
                                     );
                                 })()}
 
                                 <div className="overflow-x-auto">
-                                    <tr className="w-full">
+                                    <table className="w-full">
                                         <thead className="border-b">
-                                            <tr className="text-left text-sm text-gray-500">
+                                            <tr className="text-left text-sm text-blue-800 italic">
                                                 <th className="pb-2">USER ID</th>
                                                 <th className="pb-2">ITEMS</th>
                                                 <th className="pb-2">TOTAL</th>
@@ -1007,9 +1153,9 @@ const AdminDashboard = () => {
                                                         <tr>
                                                             <td colSpan="6" className="py-12 text-center">
                                                                 <div className="flex flex-col items-center justify-center">
-                                                                    <FaShoppingCart className="text-gray-300 text-5xl mb-3" />
-                                                                    <p className="text-gray-500">No active carts found</p>
-                                                                    <p className="text-gray-400 text-sm mt-1">Carts will appear here when users add items</p>
+                                                                    <FaShoppingCart className="text-blue-800 italic text-5xl mb-3" />
+                                                                    <p className="text-blue-800 italic">No active carts found</p>
+                                                                    <p className="text-blue-800 italic text-sm mt-1">Carts will appear here when users add items</p>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -1017,8 +1163,7 @@ const AdminDashboard = () => {
                                                 }
                                             })()}
                                         </tbody>
-                                        licensierad
-                                    </tr>
+                                    </table>
                                 </div>
                             </>
                         )}
@@ -1140,6 +1285,118 @@ const AdminDashboard = () => {
                                     <button
                                         type="button"
                                         onClick={() => setShowEditModal(false)}
+                                        className="border border-gray-300 px-6 py-2 rounded-lg hover:bg-gray-50"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Category Modal - Create/Edit Category */}
+            {showCategoryModal && (
+                <div className="fixed inset-0  bg-opacity-50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+                        <div className="p-6">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-xl font-bold text-blue-800 italic">
+                                    {editingCategory ? 'Edit Category' : 'Create New Category'}
+                                </h3>
+                                <button
+                                    onClick={() => setShowCategoryModal(false)}
+                                    className="text-blue-800 italic hover:text-blue-500"
+                                >
+                                    <FaTimes />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleSaveCategory}>
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-blue-800 italic mb-1">
+                                        Category Name *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={newCategory.name}
+                                        onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
+                                        placeholder="e.g., Fashion, Electronics, Toys"
+                                        className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-blue-800 italic mb-1">
+                                        Description
+                                    </label>
+                                    <textarea
+                                        rows="3"
+                                        value={newCategory.description}
+                                        onChange={(e) => setNewCategory({ ...newCategory, description: e.target.value })}
+                                        placeholder="Brief description of the category"
+                                        className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-blue-800 italic mb-1">
+                                        Category Image URL
+                                    </label>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="text"
+                                            value={categoryImageInput}
+                                            onChange={(e) => setCategoryImageInput(e.target.value)}
+                                            placeholder="Enter image URL"
+                                            className="flex-1 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                if (categoryImageInput) {
+                                                    setNewCategory({ ...newCategory, image: categoryImageInput });
+                                                    setCategoryImageInput('');
+                                                }
+                                            }}
+                                            className="bg-gray-200 px-4 rounded-lg hover:bg-gray-300"
+                                        >
+                                            Add
+                                        </button>
+                                    </div>
+                                    {newCategory.image && (
+                                        <div className="mt-2 relative inline-block">
+                                            <img
+                                                src={newCategory.image}
+                                                alt="Category preview"
+                                                className="w-20 h-20 object-cover rounded border"
+                                                onError={(e) => e.target.style.display = 'none'}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setNewCategory({ ...newCategory, image: '' })}
+                                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs"
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    )}
+                                    <p className="text-xs text-gray-500 mt-1">Add an image URL for the category icon</p>
+                                </div>
+
+                                <div className="flex gap-3">
+                                    <button
+                                        type="submit"
+                                        disabled={submitting}
+                                        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                                    >
+                                        {submitting ? 'Saving...' : (editingCategory ? 'Update Category' : 'Create Category')}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowCategoryModal(false)}
                                         className="border border-gray-300 px-6 py-2 rounded-lg hover:bg-gray-50"
                                     >
                                         Cancel

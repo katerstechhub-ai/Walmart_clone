@@ -52,7 +52,11 @@ export const deleteCategory = (categoryId) => api.delete(`/categories/${category
 // ========== PRODUCT API ==========
 
 // Get Products
-export const getProducts = (merchantId) => api.get(`/products?merchant_id=${merchantId}`);
+export const getProducts = (merchantId, categoryId = null) => {
+    let url = `/products?merchant_id=${merchantId}`;
+    if (categoryId) url += `&category_id=${categoryId}`;
+    return api.get(url);
+};
 
 // Get Single Product
 export const getProduct = (productId) => api.get(`/products/${productId}`);
@@ -164,5 +168,6 @@ export const updateUser = (userId, data) => api.put(`/users/${userId}`, data);
 
 // Delete user
 export const deleteUser = (userId) => api.delete(`/users/${userId}`);
+
 
 export default api;
