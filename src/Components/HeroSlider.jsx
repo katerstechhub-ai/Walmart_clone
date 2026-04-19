@@ -83,7 +83,7 @@ const HeroSlider = () => {
                                 {current.subtitle}
                             </p>
 
-                            <Link to="/product">
+                            <Link to="/new-arrivals">
                                 <button className="bg-white text-black px-6 py-2 rounded-full font-semibold cursor-pointer border border-black transition-colors hover:bg-gray-100">
                                     {current.buttonText}
                                 </button>

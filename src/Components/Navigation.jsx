@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsSearch, BsHeart, BsPerson, BsCart, BsGeoAlt, BsChevronDown, BsList } from "react-icons/bs";
 import { Link } from 'react-router-dom';
+import { getCart } from '../api';
 
 const Navigation = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -8,6 +9,90 @@ const Navigation = () => {
     const [isServicesOpen, setIsServicesOpen] = useState(false);
     const [isMoreOpen, setIsMoreOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [cartCount, setCartCount] = useState(0);
+    const [cartTotal, setCartTotal] = useState(0);
+
+    const getUserId = () => {
+        try {
+            const userData = localStorage.getItem('walmart_user');
+            if (userData) {
+                const parsed = JSON.parse(userData);
+                return parsed.id || parsed._id;
+            }
+            return null;
+        } catch {
+            return null;
+        }
+    };
+
+    const getCartExtras = () => {
+        return JSON.parse(localStorage.getItem('cartExtras') || '{}');
+    };
+
+    const updateCartInfo = async () => {
+        const userId = getUserId();
+        
+        if (!userId) {
+            setCartCount(0);
+            setCartTotal(0);
+            return;
+        }
+
+        try {
+            const response = await getCart(userId);
+            const data = response.data?.data || response.data;
+            const extras = getCartExtras();
+            
+            let count = 0;
+            let total = 0;
+            
+            if (data && Array.isArray(data)) {
+                data.forEach(cartItem => {
+                    const quantity = cartItem.quantity || 1;
+                    count += quantity;
+                    
+                    if (cartItem.products && Array.isArray(cartItem.products)) {
+                        cartItem.products.forEach(product => {
+                            const productId = product.id || product._id;
+                            const extra = extras[productId] || {};
+                            const price = extra.price || parseFloat(product.price) || 0;
+                            total += price * quantity;
+                        });
+                    }
+                });
+            }
+            
+            setCartCount(count);
+            setCartTotal(total);
+        } catch (err) {
+            console.error('Error fetching cart for navigation:', err);
+            // Fallback to localStorage only
+            const extras = getCartExtras();
+            const count = Object.keys(extras).length;
+            let total = 0;
+            Object.values(extras).forEach(item => {
+                total += (item.price || 0);
+            });
+            setCartCount(count);
+            setCartTotal(total);
+        }
+    };
+
+    useEffect(() => {
+        updateCartInfo();
+        
+        const handleCartUpdate = () => {
+            updateCartInfo();
+        };
+        
+        window.addEventListener('cartUpdated', handleCartUpdate);
+        window.addEventListener('storage', handleCartUpdate);
+        
+        return () => {
+            window.removeEventListener('cartUpdated', handleCartUpdate);
+            window.removeEventListener('storage', handleCartUpdate);
+        };
+    }, []);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -67,9 +152,16 @@ const Navigation = () => {
                                 <BsPerson className="w-6 h-6" />
                                 <span className="text-xs mt-1">Sign In</span>
                             </Link>
-                            <Link to="/cart" className="flex flex-col items-center text-white hover:text-yellow-200">
-                                <BsCart className="w-6 h-6" />
-                                <span className="text-xs mt-1">$5.22</span>
+                            <Link to="/cart" className="flex flex-col items-center text-white hover:text-yellow-200 relative">
+                                <div className="relative">
+                                    <BsCart className="w-6 h-6" />
+                                    {cartCount > 0 && (
+                                        <span className="absolute -top-2 -right-3 bg-yellow-400 text-blue-800 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                            {cartCount}
+                                        </span>
+                                    )}
+                                </div>
+                                <span className="text-xs mt-1">${cartTotal.toFixed(2)}</span>
                             </Link>
                         </div>
 
@@ -81,8 +173,13 @@ const Navigation = () => {
                             <Link to="/signin" className="text-white">
                                 <BsPerson className="w-5 h-5" />
                             </Link>
-                            <Link to="/cart" className="text-white">
+                            <Link to="/cart" className="text-white relative">
                                 <BsCart className="w-5 h-5" />
+                                {cartCount > 0 && (
+                                    <span className="absolute -top-2 -right-3 bg-yellow-400 text-blue-800 text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                                        {cartCount}
+                                    </span>
+                                )}
                             </Link>
                             <button
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

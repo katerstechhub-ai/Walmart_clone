@@ -51,12 +51,7 @@ export const deleteCategory = (categoryId) => api.delete(`/categories/${category
 
 // ========== PRODUCT API ==========
 
-// Get Products
-export const getProducts = (merchantId, categoryId = null) => {
-    let url = `/products?merchant_id=${merchantId}`;
-    if (categoryId) url += `&category_id=${categoryId}`;
-    return api.get(url);
-};
+
 
 // Get Single Product
 export const getProduct = (productId) => api.get(`/products/${productId}`);
@@ -102,8 +97,7 @@ export const getUserLikes = (userId) => api.get(`/users/likes?user_id=${userId}`
 
 // ========== CART API ==========
 
-// Get Cart
-export const getCart = (userId) => api.get(`/carts?user_id=${userId}`);
+
 
 // Add to Cart (with variation)
 export const addToCartWithVariation = (data) => api.post('/carts', data);
@@ -168,6 +162,30 @@ export const updateUser = (userId, data) => api.put(`/users/${userId}`, data);
 
 // Delete user
 export const deleteUser = (userId) => api.delete(`/users/${userId}`);
+
+// Add these to your existing api.js file
+
+// ========== CART API ==========
+
+// Make sure your getCart function in api.js looks like this:
+export const getCart = (userId) => api.get(`/carts?user_id=${userId}`);
+
+// Update cart (add/update item) - with or without variation
+export const updateCart = (data) => api.post('/carts', data);
+// Update the getProducts function in your api.js file:
+export const getProducts = (merchantId, categoryId = null, page = 1, limit = 100) => {
+    let url = `/products?merchant_id=${merchantId}&page=${page}&limit=${limit}`;
+    if (categoryId) {
+        url += `&category_id=${categoryId}`;
+    }
+    return api.get(url);
+};
+
+
+
+// Checkout cart
+export const checkoutCart = (data) => api.post('/carts/checkout', data);
+
 
 
 export default api;

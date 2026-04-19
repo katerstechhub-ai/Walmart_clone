@@ -7,6 +7,7 @@ import CategoryGridSection from '../Components/CategoryGridSection';
 import NewInFoodBevs from '../Components/NewInFoodBevs';
 import JustInTech from '../Components/JustInTech';
 import JustInToys from '../Components/JustInToys';
+import JustInHome from '../Components/JustInHome';
 import FavoriteBrandsSection from '../Components/FavoriteBrandsSection';
 
 const NewArrivalsPage = () => {
@@ -21,6 +22,7 @@ const NewArrivalsPage = () => {
             <NewInFoodBevs/>
             <JustInTech/>
             <JustInToys/>
+            <JustInHome/>
             <FavoriteBrandsSection/>
 
             <Footer />

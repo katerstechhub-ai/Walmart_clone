@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navigation from '../Components/Navigation';
-import HeroSlider from '../Components/heroslider';
+import HeroSlider from '../Components/Heroslider';
 import Card from '../Components/Card';
 import MothersDaySection from '../Components/Mothersday';
 import EventSection from '../Components/EventSection';
@@ -177,7 +177,7 @@ const Home = () => {
                 {/* Header with Title and Shop All Link */}
                 <div className="flex justify-between items-center mb-6 pb-3">
                     <h2 className="text-2xl font-bold text-gray-800">Discover Great Brands</h2>
-                    <Link to="/product" className="text-black cursor-pointer text-sm font-medium underline underline-offset-4">
+                    <Link to="/new-arrivals" className="text-black cursor-pointer text-sm font-medium underline underline-offset-4">
                         Shop all
                     </Link>
                 </div>
