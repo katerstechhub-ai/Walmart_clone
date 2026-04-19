@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import CartFooter from '../Components/CartFooter';
 
 const BASE_URL = 'http://ecommerce.reworkstaging.name.ng/v2';
 
@@ -26,7 +27,6 @@ const SignUpPage = () => {
         setLoading(true);
 
         try {
-            // Matches the API documentation exactly
             const resp = await axios.post(`${BASE_URL}/users`, {
                 first_name: firstName,
                 last_name: lastName,
@@ -47,25 +47,26 @@ const SignUpPage = () => {
             console.log('Registration error:', err.response?.data);
             const errorMsg = err.response?.data?.error || err.response?.data?.message || 'Registration failed';
             setError(errorMsg);
-            alert(errorMsg);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="flex-1 flex justify-center items-center py-8 px-5">
-            <div className="min-h-screen flex flex-col">
-                <div className="max-w-[1400px] mx-auto px-5 py-4">
-                    <Link to="/">
-                        <img
-                            src="https://i5.walmartimages.com/dfw/4ff9c6c9-af86/k2-_47db52a8-75b4-4c98-868a-4cf9248272c5.v1.svg"
-                            alt="Walmart"
-                            className="h-17 w-17"
-                        />
-                    </Link>
-                </div>
+        <div className="min-h-screen flex flex-col">
+            {/* Logo */}
+            <div className="max-w-[1400px] mx-auto px-5 py-4">
+                <Link to="/">
+                    <img
+                        src="https://i5.walmartimages.com/dfw/4ff9c6c9-af86/k2-_47db52a8-75b4-4c98-868a-4cf9248272c5.v1.svg"
+                        alt="Walmart"
+                        className="h-17 w-17"
+                    />
+                </Link>
+            </div>
 
+            {/* Form centered */}
+            <div className="flex-1 flex justify-center items-center px-5 py-8">
                 <div className="max-w-md w-80">
                     <h1 className="text-xl text-center font-bold text-gray-800 mb-2">Create your Walmart account</h1>
                     <p className="text-sm text-center text-gray-600 mb-6">
@@ -158,6 +159,9 @@ const SignUpPage = () => {
                     </form>
                 </div>
             </div>
+
+            {/* Footer at bottom */}
+            <CartFooter />
         </div>
     );
 };
