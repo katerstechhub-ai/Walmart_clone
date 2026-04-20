@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BsSearch, BsHeart, BsPerson, BsCart, BsGeoAlt, BsChevronDown, BsList } from "react-icons/bs";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getCart } from '../api';
 
 const Navigation = () => {
@@ -11,6 +11,9 @@ const Navigation = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [cartCount, setCartCount] = useState(0);
     const [cartTotal, setCartTotal] = useState(0);
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
     const getUserId = () => {
         try {
@@ -29,9 +32,22 @@ const Navigation = () => {
         return JSON.parse(localStorage.getItem('cartExtras') || '{}');
     };
 
+    // Get current user
+    const getCurrentUser = () => {
+        try {
+            const userData = localStorage.getItem('walmart_user');
+            if (userData) {
+                return JSON.parse(userData);
+            }
+            return null;
+        } catch {
+            return null;
+        }
+    };
+
     const updateCartInfo = async () => {
         const userId = getUserId();
-        
+
         if (!userId) {
             setCartCount(0);
             setCartTotal(0);
@@ -42,15 +58,15 @@ const Navigation = () => {
             const response = await getCart(userId);
             const data = response.data?.data || response.data;
             const extras = getCartExtras();
-            
+
             let count = 0;
             let total = 0;
-            
+
             if (data && Array.isArray(data)) {
                 data.forEach(cartItem => {
                     const quantity = cartItem.quantity || 1;
                     count += quantity;
-                    
+
                     if (cartItem.products && Array.isArray(cartItem.products)) {
                         cartItem.products.forEach(product => {
                             const productId = product.id || product._id;
@@ -61,7 +77,7 @@ const Navigation = () => {
                     }
                 });
             }
-            
+
             setCartCount(count);
             setCartTotal(total);
         } catch (err) {
@@ -78,19 +94,52 @@ const Navigation = () => {
         }
     };
 
+    // Check user authentication status
+    const checkUserAuth = () => {
+        const currentUser = getCurrentUser();
+        setUser(currentUser);
+    };
+
+    // Handle sign out
+    const handleSignOut = () => {
+        localStorage.removeItem('walmart_user');
+        localStorage.removeItem('cartExtras');
+        setUser(null);
+        setIsUserMenuOpen(false);
+        setCartCount(0);
+        setCartTotal(0);
+
+        // Dispatch custom event to notify other components
+        window.dispatchEvent(new Event('userSignedOut'));
+        window.dispatchEvent(new Event('cartUpdated'));
+
+        // Navigate to home page
+        navigate('/');
+    };
+
     useEffect(() => {
         updateCartInfo();
-        
+        checkUserAuth();
+
         const handleCartUpdate = () => {
             updateCartInfo();
         };
-        
+
+        const handleUserAuthChange = () => {
+            checkUserAuth();
+            updateCartInfo();
+        };
+
         window.addEventListener('cartUpdated', handleCartUpdate);
         window.addEventListener('storage', handleCartUpdate);
-        
+        window.addEventListener('userSignedIn', handleUserAuthChange);
+        window.addEventListener('userSignedOut', handleUserAuthChange);
+
         return () => {
             window.removeEventListener('cartUpdated', handleCartUpdate);
             window.removeEventListener('storage', handleCartUpdate);
+            window.removeEventListener('userSignedIn', handleUserAuthChange);
+            window.removeEventListener('userSignedOut', handleUserAuthChange);
         };
     }, []);
 
@@ -148,10 +197,62 @@ const Navigation = () => {
                                 <BsHeart className="w-6 h-6" />
                                 <span className="text-xs mt-1">Favorites</span>
                             </button>
-                            <Link to="/signin" className="flex flex-col items-center text-white hover:text-yellow-200">
-                                <BsPerson className="w-6 h-6" />
-                                <span className="text-xs mt-1">Sign In</span>
-                            </Link>
+
+                            {/* User Section - Changes based on auth status */}
+                            <div className="relative">
+                                {user ? (
+                                    <>
+                                        <button
+                                            onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                                            className="flex flex-col items-center text-white hover:text-yellow-200"
+                                        >
+                                            <BsPerson className="w-6 h-6" />
+                                            <span className="text-xs mt-1">{user.name || user.email?.split('@')[0]}</span>
+                                        </button>
+
+                                        {isUserMenuOpen && (
+                                            <>
+                                                <div
+                                                    className="fixed inset-0 z-40"
+                                                    onClick={() => setIsUserMenuOpen(false)}
+                                                />
+                                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                                                    <div className="px-4 py-2 border-b border-gray-200">
+                                                        <p className="text-sm font-medium text-gray-900">{user.name || user.email}</p>
+                                                        <p className="text-xs text-gray-500">{user.email}</p>
+                                                    </div>
+                                                    <Link
+                                                        to="/account"
+                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        onClick={() => setIsUserMenuOpen(false)}
+                                                    >
+                                                        My Account
+                                                    </Link>
+                                                    <Link
+                                                        to="/orders"
+                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        onClick={() => setIsUserMenuOpen(false)}
+                                                    >
+                                                        My Orders
+                                                    </Link>
+                                                    <button
+                                                        onClick={handleSignOut}
+                                                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 border-t border-gray-200 mt-1 pt-2"
+                                                    >
+                                                        Sign Out
+                                                    </button>
+                                                </div>
+                                            </>
+                                        )}
+                                    </>
+                                ) : (
+                                    <Link to="/signin" className="flex flex-col items-center text-white hover:text-yellow-200">
+                                        <BsPerson className="w-6 h-6" />
+                                        <span className="text-xs mt-1">Sign In</span>
+                                    </Link>
+                                )}
+                            </div>
+
                             <Link to="/cart" className="flex flex-col items-center text-white hover:text-yellow-200 relative">
                                 <div className="relative">
                                     <BsCart className="w-6 h-6" />
@@ -170,9 +271,43 @@ const Navigation = () => {
                             <button className="text-white">
                                 <BsSearch className="w-5 h-5" />
                             </button>
-                            <Link to="/signin" className="text-white">
-                                <BsPerson className="w-5 h-5" />
-                            </Link>
+
+                            {/* Mobile User Section */}
+                            {user ? (
+                                <div className="relative">
+                                    <button
+                                        onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                                        className="text-white"
+                                    >
+                                        <BsPerson className="w-5 h-5" />
+                                    </button>
+                                    {isUserMenuOpen && (
+                                        <>
+                                            <div
+                                                className="fixed inset-0 z-40"
+                                                onClick={() => setIsUserMenuOpen(false)}
+                                            />
+                                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                                                <div className="px-4 py-2 border-b border-gray-200">
+                                                    <p className="text-sm font-medium text-gray-900">{user.name || user.email}</p>
+                                                    <p className="text-xs text-gray-500">{user.email}</p>
+                                                </div>
+                                                <button
+                                                    onClick={handleSignOut}
+                                                    className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                                >
+                                                    Sign Out
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            ) : (
+                                <Link to="/signin" className="text-white">
+                                    <BsPerson className="w-5 h-5" />
+                                </Link>
+                            )}
+
                             <Link to="/cart" className="text-white relative">
                                 <BsCart className="w-5 h-5" />
                                 {cartCount > 0 && (
