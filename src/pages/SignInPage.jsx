@@ -1,9 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CartFooter from '../Components/CartFooter';
 
 const BASE_URL = 'http://ecommerce.reworkstaging.name.ng/v2';
+
+const Toast = ({ message, onClose }) => {
+    useEffect(() => {
+        const timer = setTimeout(onClose, 3000);
+        return () => clearTimeout(timer);
+    }, [onClose]);
+
+    return (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black text-white text-sm px-6 py-3 rounded-full shadow-lg z-50 animate-fade-in">
+            {message}
+        </div>
+    );
+};
 
 const SignInPage = () => {
     const navigate = useNavigate();
@@ -11,6 +24,7 @@ const SignInPage = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [toast, setToast] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,20 +43,17 @@ const SignInPage = () => {
                 password: password
             });
 
-            console.log('Login successful:', resp.data);
-
             if (resp.data && (resp.data.id || resp.data._id || resp.data.token)) {
                 localStorage.setItem('walmart_user', JSON.stringify(resp.data));
                 if (resp.data.token) {
                     localStorage.setItem('token', resp.data.token);
                 }
-                alert('Login successful!');
-                navigate('/');
+                setToast('Login successful!');
+                setTimeout(() => navigate('/'), 1500);
             } else {
                 setError('Invalid email or password');
             }
         } catch (err) {
-            console.log('Login error:', err.response?.data);
             if (err.response?.status === 401 || err.response?.status === 404) {
                 setError('Invalid email or password');
             } else {
@@ -55,16 +66,16 @@ const SignInPage = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            {/* Logo */}
+            {toast && <Toast message={toast} onClose={() => setToast('')} />}
+
             <div className="max-w-[1400px] mx-auto px-5 py-4">
-                    <img
-                        src="https://i5.walmartimages.com/dfw/4ff9c6c9-af86/k2-_47db52a8-75b4-4c98-868a-4cf9248272c5.v1.svg"
-                        alt="Walmart"
-                        className="h-17 w-17"
-                    />
+                <img
+                    src="https://i5.walmartimages.com/dfw/4ff9c6c9-af86/k2-_47db52a8-75b4-4c98-868a-4cf9248272c5.v1.svg"
+                    alt="Walmart"
+                    className="h-17 w-17"
+                />
             </div>
 
-            {/* Form centered */}
             <div className="flex-1 flex justify-center items-center px-5 py-8">
                 <div className="max-w-md w-80">
                     <h1 className="text-xl text-center font-bold text-gray-800 mb-2">Sign in to your account</h1>
@@ -102,9 +113,7 @@ const SignInPage = () => {
                             />
                         </div>
 
-                        {error && (
-                            <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
-                        )}
+                        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
 
                         <button
                             type="submit"
@@ -117,7 +126,6 @@ const SignInPage = () => {
                 </div>
             </div>
 
-            {/* Footer at bottom */}
             <CartFooter />
         </div>
     );
