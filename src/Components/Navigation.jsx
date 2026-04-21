@@ -218,26 +218,26 @@ const Navigation = () => {
                                                 />
                                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                                                     <div className="px-4 py-2 border-b border-gray-200">
-                                                        <p className="text-sm font-medium text-gray-900">{user.name || user.email}</p>
+                                                        <p className="text-sm font-medium text-blue-800 italic">{user.name || user.email}</p>
                                                         <p className="text-xs text-gray-500">{user.email}</p>
                                                     </div>
                                                     <Link
-                                                        to="/account"
-                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        to="/"
+                                                        className="block px-4 py-2 text-sm text-blue-800 italic hover:bg-blue-100"
                                                         onClick={() => setIsUserMenuOpen(false)}
                                                     >
                                                         My Account
                                                     </Link>
                                                     <Link
-                                                        to="/orders"
-                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        to="/"
+                                                        className="block px-4 py-2 text-sm text-blue-800 italic hover:bg-blue-100"
                                                         onClick={() => setIsUserMenuOpen(false)}
                                                     >
                                                         My Orders
                                                     </Link>
                                                     <button
                                                         onClick={handleSignOut}
-                                                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 border-t border-gray-200 mt-1 pt-2"
+                                                        className="block w-full text-left px-4 py-2 text-sm text-red-700  hover:bg-blue-100 border-t border-blue-200 mt-1 pt-2"
                                                     >
                                                         Sign Out
                                                     </button>
