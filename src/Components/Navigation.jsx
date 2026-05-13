@@ -460,13 +460,13 @@ const Navigation = () => {
                             )}
                         </div>
 
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white transition-colors text-sm border border-transparent text-gray-700">Rollbacks & More</button>
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">Mother's Day</button>
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">Get it Fast</button>
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">Pharmacy</button>
-                        <Link to="/new-arrivals" className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">New Arrivals</Link>
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">bettergoods</button>
-                        <button className="px-2 py-1 rounded-full hover:border-blue-500 bg-white text-sm transition-colors border border-transparent text-gray-700">Walmart+</button>
+                        <Link to="/new-arrivals" className="px-3 py-2 text-left rounded-lg hover:bg-gray-100 text-sm text-gray-700">Rollbacks & More</Link>
+                            <Link to="/new-arrivals" className="px-3 py-2 text-left rounded-lg hover:bg-gray-100 text-sm text-gray-700">Mother's Day</Link>
+                            <Link to="/new-arrivals" className="px-3 py-2 text-left rounded-lg hover:bg-gray-100 text-sm text-gray-700">Get it Fast</Link>
+                            <Link to="/new-arrivals" className="px-3 py-2 text-left rounded-lg hover:bg-gray-100 text-sm text-gray-700">Pharmacy</Link>
+                            <Link to="/new-arrivals" className="px-3 py-2 text-left rounded-lg hover:bg-gray-100 text-sm text-gray-700">New Arrivals</Link>
+                            <Link to="/new-arrivals" className="px-3 py-2 text-left rounded-lg hover:bg-gray-100 text-sm text-gray-700">bettergoods</Link>
+                            <Link to="/new-arrivals" className="px-3 py-2 text-left rounded-lg hover:bg-gray-100 text-sm text-gray-700">Walmart+</Link>
 
                         <div className="relative mx-auto">
                             <button
