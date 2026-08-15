@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from '../Components/Navigation';
 import Footer from '../Components/Footer';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
     FaTruck,
     FaUndo,
@@ -24,12 +24,19 @@ import CustomerRatingsSection from '../Components/CustomerRatingsSection';
 import MoreItemsToExplore from '../Components/MoreItemsToExplore';
 import DisneysectionSection from '../Components/Disneysection';
 import ProductsRelatedToThisItem from '../Components/ProductsRelatedToThisItem';
-import { updateCart, getCart } from '../api';
+import { updateCart, getCart, getProduct } from '../api';
 
 const ProductDetailsPage = () => {
+    const { id } = useParams();
     const { state } = useLocation();
     const navigate = useNavigate();
-    const product = state?.product;
+
+    // Fast path: if we navigated here in-app with product data already in state,
+    // show it immediately. Otherwise (direct load / refresh / shared link),
+    // start with null and fetch by id.
+    const [product, setProduct] = useState(state?.product || null);
+    const [loading, setLoading] = useState(!state?.product);
+    const [loadError, setLoadError] = useState(null);
 
     const [selectedSize, setSelectedSize] = useState('');
     const [selectedColor, setSelectedColor] = useState(0);
@@ -44,6 +51,50 @@ const ProductDetailsPage = () => {
         setToast({ message, type });
         setTimeout(() => setToast(null), 3000);
     };
+
+    // Fetch product by id whenever the id changes, unless we already have
+    // matching product data from navigation state.
+    useEffect(() => {
+        if (!id) return;
+
+        const alreadyHaveIt = product && String(product.id || product._id) === String(id);
+        if (alreadyHaveIt) {
+            setLoading(false);
+            return;
+        }
+
+        let cancelled = false;
+        setLoading(true);
+        setLoadError(null);
+
+        getProduct(id)
+            .then((res) => {
+                if (cancelled) return;
+                const fetched = res.data?.data || res.data;
+                setProduct(fetched);
+            })
+            .catch((err) => {
+                if (cancelled) return;
+                console.error('Error fetching product:', err);
+                setLoadError('Could not load this product.');
+            })
+            .finally(() => {
+                if (!cancelled) setLoading(false);
+            });
+
+        return () => {
+            cancelled = true;
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id]);
+
+    // Reset image/color/size selection whenever the product actually changes
+    useEffect(() => {
+        setCurrentImage(0);
+        setSelectedColor(0);
+        setSelectedSize('');
+        setPreviewImage(null);
+    }, [product?.id, product?._id]);
 
     const getUserId = () => {
         try {
@@ -195,6 +246,31 @@ const ProductDetailsPage = () => {
             setAddingToCart(false);
         }
     };
+
+    if (loading) {
+        return (
+            <div className="flex flex-col min-h-screen">
+                <Navigation />
+                <div className="flex-grow flex items-center justify-center py-24">
+                    <p className="text-gray-500 text-sm">Loading product…</p>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
+    if (loadError || !product) {
+        return (
+            <div className="flex flex-col min-h-screen">
+                <Navigation />
+                <div className="flex-grow flex flex-col items-center justify-center py-24 gap-3">
+                    <p className="text-gray-700 text-sm">{loadError || 'Product not found.'}</p>
+                    <Link to="/" className="text-blue-600 underline text-sm">Back to home</Link>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col min-h-screen">
