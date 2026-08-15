@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navigation from '../Components/Navigation';
-import HeroSlider from '../Components/Heroslider';
+import HeroSlider from '../Components/HeroSlider';
 import Card from '../Components/Card';
 import MothersDaySection from '../Components/Mothersday';
 import EventSection from '../Components/EventSection';

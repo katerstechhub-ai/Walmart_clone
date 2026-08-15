@@ -5,8 +5,8 @@ import NewArrivalsPage from './pages/NewArrivalsPage';
 import CartPage from './pages/CartPage';
 import SignUpPage from './pages/SignUpPage';
 import SignInPage from './pages/SignInPage';
-import MerchantSignIn from './pages/Admin/MerchantSignIn';
-import MerchantSignUp from './pages/Admin/MerchantSignUp';
+import MerchantSignIn from './pages/admin/MerchantSignIn';
+import MerchantSignUp from './pages/admin/MerchantSignUp';
 import AdminDashboard from './pages/admin/AdminDashboard';
 
 import './App.css';
